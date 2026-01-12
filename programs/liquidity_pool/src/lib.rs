@@ -55,7 +55,10 @@ pub mod liquidity_pool {
         );
         token::transfer(cpi_ctx, amount)?;
 
-        let seeds: [&[u8]; 2] = [b"pool_state", &[pool_state.bump]];
+        let seeds = &[
+            b"pool_state",
+            &[pool_state.bump],
+        ];
         let signer = &[&seeds[..]];
 
         let mint_ctx = CpiContext::new_with_signer(
@@ -126,7 +129,10 @@ pub mod liquidity_pool {
             ],
         )?;
 
-        let seeds: [&[u8]; 2] = [b"pool_state", &[pool_state.bump]];
+        let seeds = &[
+            b"pool_state",
+            &[pool_state.bump],
+        ];
         let signer = &[&seeds[..]];
 
         let mint_ctx = CpiContext::new_with_signer(
@@ -204,7 +210,10 @@ pub mod liquidity_pool {
         );
         token::burn(burn_ctx, lp_tokens)?;
 
-        let seeds: [&[u8]; 2] = [b"pool_state", &[pool_state.bump]];
+        let seeds = &[
+            b"pool_state",
+            &[pool_state.bump],
+        ];
         let signer = &[&seeds[..]];
 
         let transfer_ctx = CpiContext::new_with_signer(
@@ -353,7 +362,10 @@ pub mod liquidity_pool {
                     ErrorCode::InsufficientPoolLiquidity
                 );
 
-                let seeds: [&[u8]; 2] = [b"pool_state", &[pool_state.bump]];
+                let seeds = &[
+                    b"pool_state",
+                    &[pool_state.bump],
+                ];
                 let signer = &[&seeds[..]];
 
                 let transfer_ctx = CpiContext::new_with_signer(
