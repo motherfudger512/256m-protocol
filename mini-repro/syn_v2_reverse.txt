@@ -1,0 +1,240 @@
+syn v2.0.114
+├── borsh-derive v1.6.0 (proc-macro)
+│   └── borsh v1.6.0
+│       ├── solana-borsh v2.2.1
+│       │   ├── solana-program v2.3.0
+│       │   │   ├── anchor-lang v0.31.1
+│       │   │   │   ├── anchor-spl v0.31.1
+│       │   │   │   │   └── mini-repro v0.1.0 (/Users/henryfudge/Desktop/256m-protocol/mini-repro)
+│       │   │   │   └── mini-repro v0.1.0 (/Users/henryfudge/Desktop/256m-protocol/mini-repro)
+│       │   │   ├── mini-repro v0.1.0 (/Users/henryfudge/Desktop/256m-protocol/mini-repro)
+│       │   │   ├── spl-associated-token-account v6.0.0
+│       │   │   │   └── anchor-spl v0.31.1 (*)
+│       │   │   ├── spl-elgamal-registry v0.1.1
+│       │   │   │   └── spl-token-2022 v6.0.0
+│       │   │   │       ├── anchor-spl v0.31.1 (*)
+│       │   │   │       └── spl-associated-token-account v6.0.0 (*)
+│       │   │   ├── spl-program-error v0.6.0
+│       │   │   │   ├── spl-tlv-account-resolution v0.9.0
+│       │   │   │   │   └── spl-transfer-hook-interface v0.9.0
+│       │   │   │   │       └── spl-token-2022 v6.0.0 (*)
+│       │   │   │   └── spl-transfer-hook-interface v0.9.0 (*)
+│       │   │   ├── spl-token v7.0.0
+│       │   │   │   ├── anchor-spl v0.31.1 (*)
+│       │   │   │   ├── spl-associated-token-account v6.0.0 (*)
+│       │   │   │   └── spl-token-2022 v6.0.0 (*)
+│       │   │   ├── spl-token-2022 v6.0.0 (*)
+│       │   │   └── spl-token-confidential-transfer-proof-extraction v0.2.1
+│       │   │       ├── spl-elgamal-registry v0.1.1 (*)
+│       │   │       └── spl-token-2022 v6.0.0 (*)
+│       │   └── spl-token-metadata-interface v0.6.0
+│       │       ├── anchor-spl v0.31.1 (*)
+│       │       └── spl-token-2022 v6.0.0 (*)
+│       ├── solana-hash v2.3.0
+│       │   ├── solana-blake3-hasher v2.2.1
+│       │   │   └── solana-program v2.3.0 (*)
+│       │   ├── solana-epoch-rewards v2.2.1
+│       │   │   ├── solana-program v2.3.0 (*)
+│       │   │   └── solana-sysvar v2.3.0
+│       │   │       └── solana-program v2.3.0 (*)
+│       │   ├── solana-example-mocks v2.2.1
+│       │   │   └── solana-program v2.3.0 (*)
+│       │   ├── solana-keccak-hasher v2.2.1
+│       │   │   ├── solana-example-mocks v2.2.1 (*)
+│       │   │   └── solana-program v2.3.0 (*)
+│       │   ├── solana-message v2.4.0
+│       │   │   ├── solana-example-mocks v2.2.1 (*)
+│       │   │   └── solana-program v2.3.0 (*)
+│       │   ├── solana-nonce v2.2.1
+│       │   │   ├── solana-example-mocks v2.2.1 (*)
+│       │   │   └── solana-program v2.3.0 (*)
+│       │   ├── solana-program v2.3.0 (*)
+│       │   ├── solana-sha256-hasher v2.3.0
+│       │   │   ├── solana-nonce v2.2.1 (*)
+│       │   │   ├── solana-program v2.3.0 (*)
+│       │   │   ├── solana-pubkey v2.4.0
+│       │   │   │   ├── solana-account v2.2.1
+│       │   │   │   │   └── solana-feature-gate-interface v2.2.2
+│       │   │   │   │       └── solana-program v2.3.0 (*)
+│       │   │   │   ├── solana-account-info v2.3.0
+│       │   │   │   │   ├── solana-account v2.2.1 (*)
+│       │   │   │   │   ├── solana-cpi v2.2.1
+│       │   │   │   │   │   ├── solana-program v2.3.0 (*)
+│       │   │   │   │   │   ├── solana-stake-interface v1.2.1
+│       │   │   │   │   │   │   ├── solana-program v2.3.0 (*)
+│       │   │   │   │   │   │   └── solana-sysvar v2.3.0 (*)
+│       │   │   │   │   │   └── spl-transfer-hook-interface v0.9.0 (*)
+│       │   │   │   │   ├── solana-feature-gate-interface v2.2.2 (*)
+│       │   │   │   │   ├── solana-instructions-sysvar v2.2.2
+│       │   │   │   │   │   ├── solana-program v2.3.0 (*)
+│       │   │   │   │   │   └── solana-sysvar v2.3.0 (*)
+│       │   │   │   │   ├── solana-program v2.3.0 (*)
+│       │   │   │   │   ├── solana-program-entrypoint v2.3.0
+│       │   │   │   │   │   ├── solana-program v2.3.0 (*)
+│       │   │   │   │   │   ├── solana-sysvar v2.3.0 (*)
+│       │   │   │   │   │   └── spl-memo v6.0.0
+│       │   │   │   │   │       └── spl-token-2022 v6.0.0 (*)
+│       │   │   │   │   ├── solana-sysvar v2.3.0 (*)
+│       │   │   │   │   ├── spl-memo v6.0.0 (*)
+│       │   │   │   │   ├── spl-tlv-account-resolution v0.9.0 (*)
+│       │   │   │   │   ├── spl-transfer-hook-interface v0.9.0 (*)
+│       │   │   │   │   └── spl-type-length-value v0.7.0
+│       │   │   │   │       ├── spl-tlv-account-resolution v0.9.0 (*)
+│       │   │   │   │       ├── spl-token-2022 v6.0.0 (*)
+│       │   │   │   │       ├── spl-token-metadata-interface v0.6.0 (*)
+│       │   │   │   │       └── spl-transfer-hook-interface v0.9.0 (*)
+│       │   │   │   ├── solana-address-lookup-table-interface v2.2.2
+│       │   │   │   │   ├── solana-example-mocks v2.2.1 (*)
+│       │   │   │   │   └── solana-program v2.3.0 (*)
+│       │   │   │   ├── solana-cpi v2.2.1 (*)
+│       │   │   │   ├── solana-example-mocks v2.2.1 (*)
+│       │   │   │   ├── solana-feature-gate-interface v2.2.2 (*)
+│       │   │   │   ├── solana-instruction v2.3.3
+│       │   │   │   │   ├── solana-account v2.2.1 (*)
+│       │   │   │   │   ├── solana-address-lookup-table-interface v2.2.2 (*)
+│       │   │   │   │   ├── solana-bincode v2.2.1
+│       │   │   │   │   │   ├── solana-message v2.4.0 (*)
+│       │   │   │   │   │   └── solana-program v2.3.0 (*)
+│       │   │   │   │   ├── solana-cpi v2.2.1 (*)
+│       │   │   │   │   ├── solana-example-mocks v2.2.1 (*)
+│       │   │   │   │   ├── solana-feature-gate-interface v2.2.2 (*)
+│       │   │   │   │   ├── solana-instructions-sysvar v2.2.2 (*)
+│       │   │   │   │   ├── solana-loader-v2-interface v2.2.1
+│       │   │   │   │   │   └── solana-program v2.3.0 (*)
+│       │   │   │   │   ├── solana-loader-v3-interface v5.0.0
+│       │   │   │   │   │   └── solana-program v2.3.0 (*)
+│       │   │   │   │   ├── solana-loader-v4-interface v2.2.1
+│       │   │   │   │   │   └── solana-program v2.3.0 (*)
+│       │   │   │   │   ├── solana-message v2.4.0 (*)
+│       │   │   │   │   ├── solana-program v2.3.0 (*)
+│       │   │   │   │   ├── solana-program-error v2.2.2
+│       │   │   │   │   │   ├── solana-account-info v2.3.0 (*)
+│       │   │   │   │   │   ├── solana-cpi v2.2.1 (*)
+│       │   │   │   │   │   ├── solana-feature-gate-interface v2.2.2 (*)
+│       │   │   │   │   │   ├── solana-instructions-sysvar v2.2.2 (*)
+│       │   │   │   │   │   ├── solana-program v2.3.0 (*)
+│       │   │   │   │   │   ├── solana-program-entrypoint v2.3.0 (*)
+│       │   │   │   │   │   ├── solana-program-pack v2.2.1
+│       │   │   │   │   │   │   └── solana-program v2.3.0 (*)
+│       │   │   │   │   │   ├── solana-stake-interface v1.2.1 (*)
+│       │   │   │   │   │   ├── solana-sysvar v2.3.0 (*)
+│       │   │   │   │   │   ├── spl-discriminator v0.4.1
+│       │   │   │   │   │   │   ├── spl-tlv-account-resolution v0.9.0 (*)
+│       │   │   │   │   │   │   ├── spl-token-group-interface v0.5.0
+│       │   │   │   │   │   │   │   ├── anchor-spl v0.31.1 (*)
+│       │   │   │   │   │   │   │   └── spl-token-2022 v6.0.0 (*)
+│       │   │   │   │   │   │   ├── spl-token-metadata-interface v0.6.0 (*)
+│       │   │   │   │   │   │   ├── spl-transfer-hook-interface v0.9.0 (*)
+│       │   │   │   │   │   │   └── spl-type-length-value v0.7.0 (*)
+│       │   │   │   │   │   ├── spl-memo v6.0.0 (*)
+│       │   │   │   │   │   ├── spl-pod v0.5.1
+│       │   │   │   │   │   │   ├── anchor-spl v0.31.1 (*)
+│       │   │   │   │   │   │   ├── spl-elgamal-registry v0.1.1 (*)
+│       │   │   │   │   │   │   ├── spl-tlv-account-resolution v0.9.0 (*)
+│       │   │   │   │   │   │   ├── spl-token-2022 v6.0.0 (*)
+│       │   │   │   │   │   │   ├── spl-token-confidential-transfer-proof-extraction v0.2.1 (*)
+│       │   │   │   │   │   │   ├── spl-token-group-interface v0.5.0 (*)
+│       │   │   │   │   │   │   ├── spl-token-metadata-interface v0.6.0 (*)
+│       │   │   │   │   │   │   ├── spl-transfer-hook-interface v0.9.0 (*)
+│       │   │   │   │   │   │   └── spl-type-length-value v0.7.0 (*)
+│       │   │   │   │   │   ├── spl-tlv-account-resolution v0.9.0 (*)
+│       │   │   │   │   │   ├── spl-token-group-interface v0.5.0 (*)
+│       │   │   │   │   │   ├── spl-token-metadata-interface v0.6.0 (*)
+│       │   │   │   │   │   ├── spl-transfer-hook-interface v0.9.0 (*)
+│       │   │   │   │   │   └── spl-type-length-value v0.7.0 (*)
+│       │   │   │   │   ├── solana-serialize-utils v2.2.1
+│       │   │   │   │   │   ├── solana-instructions-sysvar v2.2.2 (*)
+│       │   │   │   │   │   ├── solana-program v2.3.0 (*)
+│       │   │   │   │   │   └── solana-vote-interface v2.2.6
+│       │   │   │   │   │       └── solana-program v2.3.0 (*)
+│       │   │   │   │   ├── solana-stable-layout v2.2.1
+│       │   │   │   │   │   └── solana-program v2.3.0 (*)
+│       │   │   │   │   ├── solana-stake-interface v1.2.1 (*)
+│       │   │   │   │   ├── solana-system-interface v1.0.0
+│       │   │   │   │   │   ├── solana-example-mocks v2.2.1 (*)
+│       │   │   │   │   │   ├── solana-feature-gate-interface v2.2.2 (*)
+│       │   │   │   │   │   ├── solana-loader-v3-interface v5.0.0 (*)
+│       │   │   │   │   │   ├── solana-loader-v4-interface v2.2.1 (*)
+│       │   │   │   │   │   ├── solana-message v2.4.0 (*)
+│       │   │   │   │   │   ├── solana-program v2.3.0 (*)
+│       │   │   │   │   │   ├── solana-stake-interface v1.2.1 (*)
+│       │   │   │   │   │   └── solana-vote-interface v2.2.6 (*)
+│       │   │   │   │   ├── solana-sysvar v2.3.0 (*)
+│       │   │   │   │   ├── solana-transaction-error v2.2.1
+│       │   │   │   │   │   ├── solana-message v2.4.0 (*)
+│       │   │   │   │   │   └── solana-signer v2.2.1
+│       │   │   │   │   │       └── solana-zk-sdk v2.3.13
+│       │   │   │   │   │           ├── spl-elgamal-registry v0.1.1 (*)
+│       │   │   │   │   │           ├── spl-pod v0.5.1 (*)
+│       │   │   │   │   │           ├── spl-token-2022 v6.0.0 (*)
+│       │   │   │   │   │           ├── spl-token-confidential-transfer-ciphertext-arithmetic v0.2.1
+│       │   │   │   │   │           │   └── spl-token-2022 v6.0.0 (*)
+│       │   │   │   │   │           ├── spl-token-confidential-transfer-proof-extraction v0.2.1 (*)
+│       │   │   │   │   │           └── spl-token-confidential-transfer-proof-generation v0.2.0
+│       │   │   │   │   │               └── spl-token-2022 v6.0.0 (*)
+│       │   │   │   │   ├── solana-vote-interface v2.2.6 (*)
+│       │   │   │   │   ├── solana-zk-sdk v2.3.13 (*)
+│       │   │   │   │   ├── spl-associated-token-account-client v2.0.0
+│       │   │   │   │   │   └── spl-associated-token-account v6.0.0 (*)
+│       │   │   │   │   ├── spl-memo v6.0.0 (*)
+│       │   │   │   │   ├── spl-tlv-account-resolution v0.9.0 (*)
+│       │   │   │   │   ├── spl-token-group-interface v0.5.0 (*)
+│       │   │   │   │   ├── spl-token-metadata-interface v0.6.0 (*)
+│       │   │   │   │   └── spl-transfer-hook-interface v0.9.0 (*)
+│       │   │   │   ├── solana-instructions-sysvar v2.2.2 (*)
+│       │   │   │   ├── solana-loader-v2-interface v2.2.1 (*)
+│       │   │   │   ├── solana-loader-v3-interface v5.0.0 (*)
+│       │   │   │   ├── solana-loader-v4-interface v2.2.1 (*)
+│       │   │   │   ├── solana-message v2.4.0 (*)
+│       │   │   │   ├── solana-nonce v2.2.1 (*)
+│       │   │   │   ├── solana-program v2.3.0 (*)
+│       │   │   │   ├── solana-program-entrypoint v2.3.0 (*)
+│       │   │   │   ├── solana-program-error v2.2.2 (*)
+│       │   │   │   ├── solana-sdk-ids v2.2.1
+│       │   │   │   │   ├── solana-account v2.2.1 (*)
+│       │   │   │   │   ├── solana-address-lookup-table-interface v2.2.2 (*)
+│       │   │   │   │   ├── solana-clock v2.2.2
+│       │   │   │   │   │   ├── solana-account v2.2.1 (*)
+│       │   │   │   │   │   ├── solana-address-lookup-table-interface v2.2.2 (*)
+│       │   │   │   │   │   ├── solana-example-mocks v2.2.1 (*)
+│       │   │   │   │   │   ├── solana-program v2.3.0 (*)
+│       │   │   │   │   │   ├── solana-stake-interface v1.2.1 (*)
+│       │   │   │   │   │   ├── solana-sysvar v2.3.0 (*)
+│       │   │   │   │   │   └── solana-vote-interface v2.2.6 (*)
+│       │   │   │   │   ├── solana-epoch-rewards v2.2.1 (*)
+│       │   │   │   │   ├── solana-epoch-schedule v2.2.1
+│       │   │   │   │   │   ├── solana-program v2.3.0 (*)
+│       │   │   │   │   │   └── solana-sysvar v2.3.0 (*)
+│       │   │   │   │   ├── solana-example-mocks v2.2.1 (*)
+│       │   │   │   │   ├── solana-feature-gate-interface v2.2.2 (*)
+│       │   │   │   │   ├── solana-instructions-sysvar v2.2.2 (*)
+│       │   │   │   │   ├── solana-last-restart-slot v2.2.1
+│       │   │   │   │   │   ├── solana-program v2.3.0 (*)
+│       │   │   │   │   │   └── solana-sysvar v2.3.0 (*)
+│       │   │   │   │   ├── solana-loader-v2-interface v2.2.1 (*)
+│       │   │   │   │   ├── solana-loader-v3-interface v5.0.0 (*)
+│       │   │   │   │   ├── solana-loader-v4-interface v2.2.1 (*)
+│       │   │   │   │   ├── solana-message v2.4.0 (*)
+│       │   │   │   │   ├── solana-program v2.3.0 (*)
+│       │   │   │   │   ├── solana-rent v2.2.1
+│       │   │   │   │   │   ├── solana-feature-gate-interface v2.2.2 (*)
+│       │   │   │   │   │   ├── solana-program v2.3.0 (*)
+│       │   │   │   │   │   ├── solana-sysvar v2.3.0 (*)
+│       │   │   │   │   │   └── solana-vote-interface v2.2.6 (*)
+│       │   │   │   │   ├── solana-slot-hashes v2.2.1
+│       │   │   │   │   │   ├── solana-address-lookup-table-interface v2.2.2 (*)
+│       │   │   │   │   │   ├── solana-program v2.3.0 (*)
+│       │   │   │   │   │   └── solana-sysvar v2.3.0 (*)
+│       │   │   │   │   ├── solana-slot-history v2.2.1
+│       │   │   │   │   │   ├── solana-program v2.3.0 (*)
+│       │   │   │   │   │   └── solana-sysvar v2.3.0 (*)
+│       │   │   │   │   ├── solana-sysvar v2.3.0 (*)
+│       │   │   │   │   ├── solana-sysvar-id v2.2.1
+│       │   │   │   │   │   ├── solana-clock v2.2.2 (*)
+│       │   │   │   │   │   ├── solana-epoch-rewards v2.2.1 (*)
+│       │   │   │   │   │   ├── solana-epoch-schedule v2.2.1 (*)
+│       │   │   │   │   │   ├── solana-instructions-sysvar v2.2.2 (*)
+│       │   │   │   │   │   ├── solana-last-restart-slot v2.2.1 (*)
+│       │   │   │   │   │   ├── solana-program v2.3.0 (*)
+│       │   │   │   │   │   ├── solana-rent v2.2.1 (*)
+│       │   │   │   │   │   ├── solana-slot-hashes v2.2.1 (*)

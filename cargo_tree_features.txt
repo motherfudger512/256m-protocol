@@ -1,0 +1,1732 @@
+claims-processor v0.1.0 (/Users/henryfudge/Desktop/256m-protocol/programs/claims_processor)
+├── anchor-attribute-program feature "default"
+│   └── anchor-attribute-program v0.31.1 (proc-macro)
+│       ├── anchor-lang-idl feature "convert"
+│       │   ├── anchor-lang-idl v0.1.2
+│       │   │   ├── anchor-lang-idl-spec feature "default"
+│       │   │   │   └── anchor-lang-idl-spec v0.1.0
+│       │   │   │       ├── anyhow feature "default"
+│       │   │   │       │   ├── anyhow v1.0.100
+│       │   │   │       │   └── anyhow feature "std"
+│       │   │   │       │       └── anyhow v1.0.100
+│       │   │   │       ├── serde feature "default"
+│       │   │   │       │   ├── serde v1.0.228
+│       │   │   │       │   │   ├── serde_core feature "result"
+│       │   │   │       │   │   │   └── serde_core v1.0.228
+│       │   │   │       │   │   └── serde_derive feature "default"
+│       │   │   │       │   │       └── serde_derive v1.0.228 (proc-macro)
+│       │   │   │       │   │           ├── proc-macro2 feature "proc-macro"
+│       │   │   │       │   │           │   └── proc-macro2 v1.0.105
+│       │   │   │       │   │           │       └── unicode-ident feature "default"
+│       │   │   │       │   │           │           └── unicode-ident v1.0.22
+│       │   │   │       │   │           ├── quote feature "proc-macro"
+│       │   │   │       │   │           │   ├── quote v1.0.43
+│       │   │   │       │   │           │   │   └── proc-macro2 v1.0.105 (*)
+│       │   │   │       │   │           │   └── proc-macro2 feature "proc-macro" (*)
+│       │   │   │       │   │           ├── syn feature "clone-impls"
+│       │   │   │       │   │           │   └── syn v2.0.114
+│       │   │   │       │   │           │       ├── proc-macro2 v1.0.105 (*)
+│       │   │   │       │   │           │       ├── quote v1.0.43 (*)
+│       │   │   │       │   │           │       └── unicode-ident feature "default" (*)
+│       │   │   │       │   │           ├── syn feature "derive"
+│       │   │   │       │   │           │   └── syn v2.0.114 (*)
+│       │   │   │       │   │           ├── syn feature "parsing"
+│       │   │   │       │   │           │   └── syn v2.0.114 (*)
+│       │   │   │       │   │           ├── syn feature "printing"
+│       │   │   │       │   │           │   └── syn v2.0.114 (*)
+│       │   │   │       │   │           └── syn feature "proc-macro"
+│       │   │   │       │   │               ├── syn v2.0.114 (*)
+│       │   │   │       │   │               ├── proc-macro2 feature "proc-macro" (*)
+│       │   │   │       │   │               └── quote feature "proc-macro" (*)
+│       │   │   │       │   └── serde feature "std"
+│       │   │   │       │       ├── serde v1.0.228 (*)
+│       │   │   │       │       └── serde_core feature "std"
+│       │   │   │       │           └── serde_core v1.0.228
+│       │   │   │       └── serde feature "derive"
+│       │   │   │           ├── serde v1.0.228 (*)
+│       │   │   │           └── serde feature "serde_derive"
+│       │   │   │               └── serde v1.0.228 (*)
+│       │   │   ├── anyhow feature "default" (*)
+│       │   │   ├── serde feature "default" (*)
+│       │   │   ├── serde feature "derive" (*)
+│       │   │   ├── heck feature "default"
+│       │   │   │   └── heck v0.3.3
+│       │   │   │       └── unicode-segmentation feature "default"
+│       │   │   │           └── unicode-segmentation v1.12.0
+│       │   │   ├── serde_json feature "default"
+│       │   │   │   ├── serde_json v1.0.149
+│       │   │   │   │   ├── memchr v2.7.6
+│       │   │   │   │   ├── serde_core v1.0.228
+│       │   │   │   │   ├── itoa feature "default"
+│       │   │   │   │   │   └── itoa v1.0.17
+│       │   │   │   │   └── zmij feature "default"
+│       │   │   │   │       └── zmij v1.0.13
+│       │   │   │   └── serde_json feature "std"
+│       │   │   │       ├── serde_json v1.0.149 (*)
+│       │   │   │       ├── serde_core feature "std" (*)
+│       │   │   │       └── memchr feature "std"
+│       │   │   │           ├── memchr v2.7.6
+│       │   │   │           └── memchr feature "alloc"
+│       │   │   │               └── memchr v2.7.6
+│       │   │   └── sha2 feature "default"
+│       │   │       ├── sha2 v0.10.9
+│       │   │       │   ├── cfg-if feature "default"
+│       │   │       │   │   └── cfg-if v1.0.4
+│       │   │       │   ├── cpufeatures feature "default"
+│       │   │       │   │   └── cpufeatures v0.2.17
+│       │   │       │   │       └── libc v0.2.180
+│       │   │       │   └── digest feature "default"
+│       │   │       │       ├── digest v0.10.7
+│       │   │       │       │   ├── block-buffer feature "default"
+│       │   │       │       │   │   └── block-buffer v0.10.4
+│       │   │       │       │   │       └── generic-array feature "default"
+│       │   │       │       │   │           └── generic-array v0.14.7
+│       │   │       │       │   │               └── typenum feature "default"
+│       │   │       │       │   │                   └── typenum v1.19.0
+│       │   │       │       │   │               [build-dependencies]
+│       │   │       │       │   │               └── version_check feature "default"
+│       │   │       │       │   │                   └── version_check v0.9.5
+│       │   │       │       │   └── crypto-common feature "default"
+│       │   │       │       │       └── crypto-common v0.1.7
+│       │   │       │       │           ├── generic-array feature "default" (*)
+│       │   │       │       │           ├── generic-array feature "more_lengths"
+│       │   │       │       │           │   └── generic-array v0.14.7 (*)
+│       │   │       │       │           └── typenum feature "default" (*)
+│       │   │       │       └── digest feature "core-api"
+│       │   │       │           ├── digest v0.10.7 (*)
+│       │   │       │           └── digest feature "block-buffer"
+│       │   │       │               └── digest v0.10.7 (*)
+│       │   │       └── sha2 feature "std"
+│       │   │           ├── sha2 v0.10.9 (*)
+│       │   │           └── digest feature "std"
+│       │   │               ├── digest v0.10.7 (*)
+│       │   │               ├── digest feature "alloc"
+│       │   │               │   └── digest v0.10.7 (*)
+│       │   │               └── crypto-common feature "std"
+│       │   │                   └── crypto-common v0.1.7 (*)
+│       │   ├── anchor-lang-idl feature "heck"
+│       │   │   └── anchor-lang-idl v0.1.2 (*)
+│       │   └── anchor-lang-idl feature "sha2"
+│       │       └── anchor-lang-idl v0.1.2 (*)
+│       ├── anchor-lang-idl feature "default"
+│       │   └── anchor-lang-idl v0.1.2 (*)
+│       ├── anyhow feature "default" (*)
+│       ├── proc-macro2 feature "default"
+│       │   ├── proc-macro2 v1.0.105 (*)
+│       │   └── proc-macro2 feature "proc-macro" (*)
+│       ├── quote feature "default"
+│       │   ├── quote v1.0.43 (*)
+│       │   └── quote feature "proc-macro" (*)
+│       ├── heck feature "default" (*)
+│       ├── serde_json feature "default" (*)
+│       ├── anchor-syn feature "default"
+│       │   └── anchor-syn v0.31.1
+│       │       ├── anyhow feature "default" (*)
+│       │       ├── serde feature "default" (*)
+│       │       ├── serde feature "derive" (*)
+│       │       ├── proc-macro2 feature "default" (*)
+│       │       ├── proc-macro2 feature "span-locations"
+│       │       │   └── proc-macro2 v1.0.105 (*)
+│       │       ├── quote feature "default" (*)
+│       │       ├── heck feature "default" (*)
+│       │       ├── serde_json feature "default" (*)
+│       │       ├── sha2 feature "default" (*)
+│       │       ├── bs58 feature "default"
+│       │       │   ├── bs58 v0.5.1
+│       │       │   └── bs58 feature "std"
+│       │       │       ├── bs58 v0.5.1
+│       │       │       └── bs58 feature "alloc"
+│       │       │           └── bs58 v0.5.1
+│       │       ├── syn feature "default"
+│       │       │   ├── syn v1.0.109
+│       │       │   │   ├── proc-macro2 v1.0.105 (*)
+│       │       │   │   ├── quote v1.0.43 (*)
+│       │       │   │   └── unicode-ident feature "default" (*)
+│       │       │   ├── syn feature "clone-impls"
+│       │       │   │   └── syn v1.0.109 (*)
+│       │       │   ├── syn feature "derive"
+│       │       │   │   └── syn v1.0.109 (*)
+│       │       │   ├── syn feature "parsing"
+│       │       │   │   └── syn v1.0.109 (*)
+│       │       │   ├── syn feature "printing"
+│       │       │   │   ├── syn v1.0.109 (*)
+│       │       │   │   └── syn feature "quote"
+│       │       │   │       └── syn v1.0.109 (*)
+│       │       │   └── syn feature "proc-macro"
+│       │       │       ├── syn v1.0.109 (*)
+│       │       │       ├── proc-macro2 feature "proc-macro" (*)
+│       │       │       ├── quote feature "proc-macro" (*)
+│       │       │       └── syn feature "quote" (*)
+│       │       ├── syn feature "extra-traits"
+│       │       │   └── syn v1.0.109 (*)
+│       │       ├── syn feature "full"
+│       │       │   └── syn v1.0.109 (*)
+│       │       ├── syn feature "parsing" (*)
+│       │       └── thiserror feature "default"
+│       │           └── thiserror v1.0.69
+│       │               └── thiserror-impl feature "default"
+│       │                   └── thiserror-impl v1.0.69 (proc-macro)
+│       │                       ├── proc-macro2 feature "default" (*)
+│       │                       ├── quote feature "default" (*)
+│       │                       └── syn feature "default"
+│       │                           ├── syn v2.0.114 (*)
+│       │                           ├── syn feature "clone-impls" (*)
+│       │                           ├── syn feature "derive" (*)
+│       │                           ├── syn feature "parsing" (*)
+│       │                           ├── syn feature "printing" (*)
+│       │                           └── syn feature "proc-macro" (*)
+│       ├── bs58 feature "default" (*)
+│       ├── syn feature "default" (*)
+│       └── syn feature "full" (*)
+├── anchor-derive-accounts feature "default"
+│   └── anchor-derive-accounts v0.31.1 (proc-macro)
+│       ├── quote feature "default" (*)
+│       ├── anchor-syn feature "default" (*)
+│       ├── syn feature "default" (*)
+│       └── syn feature "full" (*)
+├── anchor-derive-serde feature "default"
+│   └── anchor-derive-serde v0.31.1 (proc-macro)
+│       ├── proc-macro2 feature "default" (*)
+│       ├── quote feature "default" (*)
+│       ├── anchor-syn feature "default" (*)
+│       ├── syn feature "default" (*)
+│       ├── syn feature "full" (*)
+│       └── borsh-derive-internal feature "default"
+│           └── borsh-derive-internal v0.10.4
+│               ├── proc-macro2 feature "default" (*)
+│               ├── quote feature "default" (*)
+│               ├── syn feature "default" (*)
+│               ├── syn feature "fold"
+│               │   └── syn v1.0.109 (*)
+│               └── syn feature "full" (*)
+├── anchor-derive-space feature "default"
+│   └── anchor-derive-space v0.31.1 (proc-macro)
+│       ├── proc-macro2 feature "default" (*)
+│       ├── quote feature "default" (*)
+│       ├── syn feature "default" (*)
+│       └── syn feature "extra-traits" (*)
+├── anchor-lang feature "default"
+│   └── anchor-lang v0.31.1
+│       ├── anchor-attribute-program feature "default" (*)
+│       ├── thiserror feature "default" (*)
+│       ├── anchor-derive-accounts feature "default" (*)
+│       ├── anchor-derive-serde feature "default" (*)
+│       ├── anchor-derive-space feature "default" (*)
+│       ├── anchor-attribute-access-control feature "default"
+│       │   └── anchor-attribute-access-control v0.31.1 (proc-macro)
+│       │       ├── proc-macro2 feature "default" (*)
+│       │       ├── quote feature "default" (*)
+│       │       ├── anchor-syn feature "default" (*)
+│       │       ├── syn feature "default" (*)
+│       │       └── syn feature "full" (*)
+│       ├── anchor-attribute-account feature "default"
+│       │   └── anchor-attribute-account v0.31.1 (proc-macro)
+│       │       ├── proc-macro2 feature "default" (*)
+│       │       ├── quote feature "default" (*)
+│       │       ├── anchor-syn feature "default" (*)
+│       │       ├── anchor-syn feature "hash"
+│       │       │   └── anchor-syn v0.31.1 (*)
+│       │       ├── bs58 feature "default" (*)
+│       │       ├── syn feature "default" (*)
+│       │       └── syn feature "full" (*)
+│       ├── anchor-attribute-constant feature "default"
+│       │   └── anchor-attribute-constant v0.31.1 (proc-macro)
+│       │       ├── quote feature "default" (*)
+│       │       ├── anchor-syn feature "default" (*)
+│       │       ├── syn feature "default" (*)
+│       │       └── syn feature "full" (*)
+│       ├── anchor-attribute-error feature "default"
+│       │   └── anchor-attribute-error v0.31.1 (proc-macro)
+│       │       ├── quote feature "default" (*)
+│       │       ├── anchor-syn feature "default" (*)
+│       │       ├── syn feature "default" (*)
+│       │       └── syn feature "full" (*)
+│       ├── anchor-attribute-event feature "default"
+│       │   └── anchor-attribute-event v0.31.1 (proc-macro)
+│       │       ├── proc-macro2 feature "default" (*)
+│       │       ├── quote feature "default" (*)
+│       │       ├── anchor-syn feature "default" (*)
+│       │       ├── anchor-syn feature "hash" (*)
+│       │       ├── syn feature "default" (*)
+│       │       └── syn feature "full" (*)
+│       ├── base64 feature "default"
+│       │   ├── base64 v0.21.7
+│       │   └── base64 feature "std"
+│       │       ├── base64 v0.21.7
+│       │       └── base64 feature "alloc"
+│       │           └── base64 v0.21.7
+│       ├── bincode feature "default"
+│       │   └── bincode v1.3.3
+│       │       └── serde feature "default" (*)
+│       ├── borsh feature "default"
+│       │   ├── borsh v0.10.4
+│       │   │   ├── borsh-derive feature "default"
+│       │   │   │   └── borsh-derive v0.10.4 (proc-macro)
+│       │   │   │       ├── proc-macro2 feature "default" (*)
+│       │   │   │       ├── syn feature "default" (*)
+│       │   │   │       ├── syn feature "fold" (*)
+│       │   │   │       ├── syn feature "full" (*)
+│       │   │   │       ├── borsh-derive-internal feature "default" (*)
+│       │   │   │       ├── borsh-schema-derive-internal feature "default"
+│       │   │   │       │   └── borsh-schema-derive-internal v0.10.4
+│       │   │   │       │       ├── proc-macro2 feature "default" (*)
+│       │   │   │       │       ├── quote feature "default" (*)
+│       │   │   │       │       ├── syn feature "default" (*)
+│       │   │   │       │       ├── syn feature "fold" (*)
+│       │   │   │       │       └── syn feature "full" (*)
+│       │   │   │       └── proc-macro-crate feature "default"
+│       │   │   │           └── proc-macro-crate v0.1.5
+│       │   │   │               └── toml feature "default"
+│       │   │   │                   └── toml v0.5.11
+│       │   │   │                       └── serde feature "default" (*)
+│       │   │   └── hashbrown feature "default"
+│       │   │       ├── hashbrown v0.13.2
+│       │   │       │   └── ahash v0.8.12
+│       │   │       │       ├── cfg-if feature "default" (*)
+│       │   │       │       ├── once_cell feature "alloc"
+│       │   │       │       │   ├── once_cell v1.21.3
+│       │   │       │       │   └── once_cell feature "race"
+│       │   │       │       │       └── once_cell v1.21.3
+│       │   │       │       └── zerocopy feature "simd"
+│       │   │       │           └── zerocopy v0.8.33
+│       │   │       │       [build-dependencies]
+│       │   │       │       └── version_check feature "default" (*)
+│       │   │       ├── hashbrown feature "ahash"
+│       │   │       │   └── hashbrown v0.13.2 (*)
+│       │   │       └── hashbrown feature "inline-more"
+│       │   │           └── hashbrown v0.13.2 (*)
+│       │   └── borsh feature "std"
+│       │       └── borsh v0.10.4 (*)
+│       ├── bytemuck feature "default"
+│       │   └── bytemuck v1.24.0
+│       │       └── bytemuck_derive feature "default"
+│       │           └── bytemuck_derive v1.10.2 (proc-macro)
+│       │               ├── proc-macro2 feature "default" (*)
+│       │               ├── quote feature "default" (*)
+│       │               └── syn feature "default" (*)
+│       └── solana-program feature "default"
+│           ├── solana-program v2.3.0
+│           │   ├── serde feature "default" (*)
+│           │   ├── serde_derive feature "default" (*)
+│           │   ├── bs58 feature "alloc" (*)
+│           │   ├── bincode feature "default" (*)
+│           │   ├── borsh feature "default" (*)
+│           │   ├── bytemuck feature "default" (*)
+│           │   ├── blake3 feature "default"
+│           │   │   ├── blake3 v1.8.3
+│           │   │   │   ├── arrayvec v0.7.6
+│           │   │   │   ├── constant_time_eq v0.4.2
+│           │   │   │   ├── cfg-if feature "default" (*)
+│           │   │   │   ├── arrayref feature "default"
+│           │   │   │   │   └── arrayref v0.3.9
+│           │   │   │   ├── digest feature "default"
+│           │   │   │   │   ├── digest v0.10.7
+│           │   │   │   │   │   ├── subtle v2.6.1
+│           │   │   │   │   │   ├── block-buffer feature "default" (*)
+│           │   │   │   │   │   └── crypto-common feature "default"
+│           │   │   │   │   │       └── crypto-common v0.1.7
+│           │   │   │   │   │           ├── generic-array feature "default" (*)
+│           │   │   │   │   │           ├── generic-array feature "more_lengths" (*)
+│           │   │   │   │   │           ├── typenum feature "default" (*)
+│           │   │   │   │   │           └── rand_core feature "default"
+│           │   │   │   │   │               └── rand_core v0.6.4
+│           │   │   │   │   │                   └── getrandom feature "default"
+│           │   │   │   │   │                       └── getrandom v0.2.17
+│           │   │   │   │   │                           ├── libc v0.2.180
+│           │   │   │   │   │                           └── cfg-if feature "default" (*)
+│           │   │   │   │   └── digest feature "core-api"
+│           │   │   │   │       ├── digest v0.10.7 (*)
+│           │   │   │   │       └── digest feature "block-buffer"
+│           │   │   │   │           └── digest v0.10.7 (*)
+│           │   │   │   └── digest feature "mac"
+│           │   │   │       ├── digest v0.10.7 (*)
+│           │   │   │       └── digest feature "subtle"
+│           │   │   │           └── digest v0.10.7 (*)
+│           │   │   │   [build-dependencies]
+│           │   │   │   └── cc feature "default"
+│           │   │   │       └── cc v1.2.52
+│           │   │   │           ├── find-msvc-tools feature "default"
+│           │   │   │           │   └── find-msvc-tools v0.1.7
+│           │   │   │           └── shlex feature "default"
+│           │   │   │               ├── shlex v1.3.0
+│           │   │   │               └── shlex feature "std"
+│           │   │   │                   └── shlex v1.3.0
+│           │   │   └── blake3 feature "std"
+│           │   │       ├── blake3 v1.8.3 (*)
+│           │   │       └── constant_time_eq feature "std"
+│           │   │           └── constant_time_eq v0.4.2
+│           │   ├── blake3 feature "traits-preview"
+│           │   │   └── blake3 v1.8.3 (*)
+│           │   ├── borsh feature "default"
+│           │   │   ├── borsh v1.6.0
+│           │   │   │   └── borsh-derive feature "default"
+│           │   │   │       └── borsh-derive v1.6.0 (proc-macro)
+│           │   │   │           ├── proc-macro2 feature "default" (*)
+│           │   │   │           ├── quote feature "default" (*)
+│           │   │   │           ├── syn feature "default" (*)
+│           │   │   │           ├── syn feature "fold"
+│           │   │   │           │   └── syn v2.0.114 (*)
+│           │   │   │           ├── syn feature "full"
+│           │   │   │           │   └── syn v2.0.114 (*)
+│           │   │   │           ├── once_cell feature "default"
+│           │   │   │           │   ├── once_cell v1.21.3
+│           │   │   │           │   └── once_cell feature "std"
+│           │   │   │           │       ├── once_cell v1.21.3
+│           │   │   │           │       └── once_cell feature "alloc"
+│           │   │   │           │           ├── once_cell v1.21.3
+│           │   │   │           │           └── once_cell feature "race"
+│           │   │   │           │               └── once_cell v1.21.3
+│           │   │   │           └── proc-macro-crate feature "default"
+│           │   │   │               └── proc-macro-crate v3.4.0
+│           │   │   │                   └── toml_edit feature "parse"
+│           │   │   │                       └── toml_edit v0.23.10+spec-1.0.0
+│           │   │   │                           ├── indexmap feature "default"
+│           │   │   │                           │   ├── indexmap v2.13.0
+│           │   │   │                           │   │   ├── equivalent v1.0.2
+│           │   │   │                           │   │   └── hashbrown v0.16.1
+│           │   │   │                           │   └── indexmap feature "std"
+│           │   │   │                           │       └── indexmap v2.13.0 (*)
+│           │   │   │                           ├── indexmap feature "std" (*)
+│           │   │   │                           ├── toml_datetime feature "default"
+│           │   │   │                           │   ├── toml_datetime v0.7.5+spec-1.1.0
+│           │   │   │                           │   └── toml_datetime feature "std"
+│           │   │   │                           │       ├── toml_datetime v0.7.5+spec-1.1.0
+│           │   │   │                           │       └── toml_datetime feature "alloc"
+│           │   │   │                           │           └── toml_datetime v0.7.5+spec-1.1.0
+│           │   │   │                           ├── toml_parser feature "default"
+│           │   │   │                           │   ├── toml_parser v1.0.6+spec-1.1.0
+│           │   │   │                           │   │   └── winnow v0.7.14
+│           │   │   │                           │   └── toml_parser feature "std"
+│           │   │   │                           │       ├── toml_parser v1.0.6+spec-1.1.0 (*)
+│           │   │   │                           │       └── toml_parser feature "alloc"
+│           │   │   │                           │           └── toml_parser v1.0.6+spec-1.1.0 (*)
+│           │   │   │                           └── winnow feature "default"
+│           │   │   │                               ├── winnow v0.7.14
+│           │   │   │                               └── winnow feature "std"
+│           │   │   │                                   ├── winnow v0.7.14
+│           │   │   │                                   └── winnow feature "alloc"
+│           │   │   │                                       └── winnow v0.7.14
+│           │   │   │   [build-dependencies]
+│           │   │   │   └── cfg_aliases feature "default"
+│           │   │   │       └── cfg_aliases v0.2.1
+│           │   │   └── borsh feature "std"
+│           │   │       └── borsh v1.6.0 (*)
+│           │   ├── borsh feature "derive"
+│           │   │   ├── borsh v1.6.0 (*)
+│           │   │   └── borsh feature "borsh-derive"
+│           │   │       └── borsh v1.6.0 (*)
+│           │   ├── borsh feature "unstable__schema"
+│           │   │   ├── borsh v1.6.0 (*)
+│           │   │   ├── borsh feature "borsh-derive" (*)
+│           │   │   ├── borsh feature "derive" (*)
+│           │   │   └── borsh-derive feature "schema"
+│           │   │       └── borsh-derive v1.6.0 (proc-macro) (*)
+│           │   ├── lazy_static feature "default"
+│           │   │   └── lazy_static v1.5.0
+│           │   ├── log feature "default"
+│           │   │   └── log v0.4.29
+│           │   ├── memoffset feature "default"
+│           │   │   └── memoffset v0.9.1
+│           │   │       [build-dependencies]
+│           │   │       └── autocfg feature "default"
+│           │   │           └── autocfg v1.5.0
+│           │   ├── num-bigint feature "default"
+│           │   │   ├── num-bigint v0.4.6
+│           │   │   │   ├── num-integer feature "i128"
+│           │   │   │   │   └── num-integer v0.1.46
+│           │   │   │   │       └── num-traits feature "i128"
+│           │   │   │   │           └── num-traits v0.2.19
+│           │   │   │   │               [build-dependencies]
+│           │   │   │   │               └── autocfg feature "default" (*)
+│           │   │   │   └── num-traits feature "i128" (*)
+│           │   │   └── num-bigint feature "std"
+│           │   │       ├── num-bigint v0.4.6 (*)
+│           │   │       ├── num-integer feature "std"
+│           │   │       │   ├── num-integer v0.1.46 (*)
+│           │   │       │   └── num-traits feature "std"
+│           │   │       │       └── num-traits v0.2.19 (*)
+│           │   │       └── num-traits feature "std" (*)
+│           │   ├── num-traits feature "default"
+│           │   │   ├── num-traits v0.2.19 (*)
+│           │   │   └── num-traits feature "std" (*)
+│           │   ├── num-traits feature "i128" (*)
+│           │   ├── num-derive feature "default"
+│           │   │   └── num-derive v0.4.2 (proc-macro)
+│           │   │       ├── proc-macro2 feature "default" (*)
+│           │   │       ├── quote feature "default" (*)
+│           │   │       └── syn feature "default" (*)
+│           │   ├── rand feature "default"
+│           │   │   ├── rand v0.8.5
+│           │   │   │   ├── libc v0.2.180
+│           │   │   │   ├── rand_chacha v0.3.1
+│           │   │   │   │   ├── rand_core feature "default" (*)
+│           │   │   │   │   └── ppv-lite86 feature "simd"
+│           │   │   │   │       └── ppv-lite86 v0.2.21
+│           │   │   │   │           ├── zerocopy feature "default"
+│           │   │   │   │           │   └── zerocopy v0.8.33
+│           │   │   │   │           └── zerocopy feature "simd" (*)
+│           │   │   │   └── rand_core feature "default" (*)
+│           │   │   ├── rand feature "std"
+│           │   │   │   ├── rand v0.8.5 (*)
+│           │   │   │   ├── rand_core feature "std"
+│           │   │   │   │   ├── rand_core v0.6.4 (*)
+│           │   │   │   │   ├── rand_core feature "alloc"
+│           │   │   │   │   │   └── rand_core v0.6.4 (*)
+│           │   │   │   │   ├── rand_core feature "getrandom"
+│           │   │   │   │   │   └── rand_core v0.6.4 (*)
+│           │   │   │   │   └── getrandom feature "std"
+│           │   │   │   │       └── getrandom v0.2.17 (*)
+│           │   │   │   ├── rand feature "alloc"
+│           │   │   │   │   ├── rand v0.8.5 (*)
+│           │   │   │   │   └── rand_core feature "alloc" (*)
+│           │   │   │   ├── rand feature "getrandom"
+│           │   │   │   │   ├── rand v0.8.5 (*)
+│           │   │   │   │   └── rand_core feature "getrandom" (*)
+│           │   │   │   ├── rand feature "libc"
+│           │   │   │   │   └── rand v0.8.5 (*)
+│           │   │   │   ├── rand feature "rand_chacha"
+│           │   │   │   │   └── rand v0.8.5 (*)
+│           │   │   │   └── rand_chacha feature "std"
+│           │   │   │       ├── rand_chacha v0.3.1 (*)
+│           │   │   │       └── ppv-lite86 feature "std"
+│           │   │   │           └── ppv-lite86 v0.2.21 (*)
+│           │   │   └── rand feature "std_rng"
+│           │   │       ├── rand v0.8.5 (*)
+│           │   │       └── rand feature "rand_chacha" (*)
+│           │   ├── serde_bytes feature "default"
+│           │   │   ├── serde_bytes v0.11.19
+│           │   │   │   └── serde_core v1.0.228
+│           │   │   └── serde_bytes feature "std"
+│           │   │       ├── serde_bytes v0.11.19 (*)
+│           │   │       └── serde_core feature "std" (*)
+│           │   ├── solana-account-info feature "bincode"
+│           │   │   └── solana-account-info v2.3.0
+│           │   │       ├── solana-pubkey v2.4.0
+│           │   │       │   ├── serde feature "default" (*)
+│           │   │       │   ├── serde_derive feature "default" (*)
+│           │   │       │   ├── borsh feature "default" (*)
+│           │   │       │   ├── bytemuck feature "default" (*)
+│           │   │       │   ├── bytemuck_derive feature "default" (*)
+│           │   │       │   ├── borsh feature "default" (*)
+│           │   │       │   ├── borsh feature "derive" (*)
+│           │   │       │   ├── borsh feature "unstable__schema" (*)
+│           │   │       │   ├── num-traits feature "default" (*)
+│           │   │       │   ├── solana-decode-error feature "default"
+│           │   │       │   │   └── solana-decode-error v2.3.0
+│           │   │       │   │       └── num-traits feature "default" (*)
+│           │   │       │   ├── curve25519-dalek feature "default"
+│           │   │       │   │   ├── curve25519-dalek v4.1.3
+│           │   │       │   │   │   ├── digest v0.10.7 (*)
+│           │   │       │   │   │   ├── rand_core v0.6.4 (*)
+│           │   │       │   │   │   ├── subtle v2.6.1
+│           │   │       │   │   │   ├── zeroize v1.8.2
+│           │   │       │   │   │   │   └── zeroize_derive feature "default"
+│           │   │       │   │   │   │       └── zeroize_derive v1.4.3 (proc-macro)
+│           │   │       │   │   │   │           ├── proc-macro2 feature "default" (*)
+│           │   │       │   │   │   │           ├── quote feature "default" (*)
+│           │   │       │   │   │   │           ├── syn feature "default" (*)
+│           │   │       │   │   │   │           ├── syn feature "extra-traits"
+│           │   │       │   │   │   │           │   └── syn v2.0.114 (*)
+│           │   │       │   │   │   │           ├── syn feature "full" (*)
+│           │   │       │   │   │   │           └── syn feature "visit"
+│           │   │       │   │   │   │               └── syn v2.0.114 (*)
+│           │   │       │   │   │   ├── serde feature "derive" (*)
+│           │   │       │   │   │   └── cfg-if feature "default" (*)
+│           │   │       │   │   │   [build-dependencies]
+│           │   │       │   │   │   └── rustc_version feature "default"
+│           │   │       │   │   │       └── rustc_version v0.4.1
+│           │   │       │   │   │           └── semver feature "default"
+│           │   │       │   │   │               ├── semver v1.0.27
+│           │   │       │   │   │               └── semver feature "std"
+│           │   │       │   │   │                   └── semver v1.0.27
+│           │   │       │   │   ├── curve25519-dalek feature "alloc"
+│           │   │       │   │   │   ├── curve25519-dalek v4.1.3 (*)
+│           │   │       │   │   │   └── zeroize feature "alloc"
+│           │   │       │   │   │       └── zeroize v1.8.2 (*)
+│           │   │       │   │   ├── curve25519-dalek feature "precomputed-tables"
+│           │   │       │   │   │   └── curve25519-dalek v4.1.3 (*)
+│           │   │       │   │   └── curve25519-dalek feature "zeroize"
+│           │   │       │   │       └── curve25519-dalek v4.1.3 (*)
+│           │   │       │   ├── curve25519-dalek feature "digest"
+│           │   │       │   │   └── curve25519-dalek v4.1.3 (*)
+│           │   │       │   ├── curve25519-dalek feature "rand_core"
+│           │   │       │   │   └── curve25519-dalek v4.1.3 (*)
+│           │   │       │   ├── five8 feature "default"
+│           │   │       │   │   └── five8 v0.2.1
+│           │   │       │   │       └── five8_core feature "default"
+│           │   │       │   │           └── five8_core v0.1.2
+│           │   │       │   ├── five8_const feature "default"
+│           │   │       │   │   └── five8_const v0.1.4
+│           │   │       │   │       └── five8_core feature "default" (*)
+│           │   │       │   ├── solana-atomic-u64 feature "default"
+│           │   │       │   │   └── solana-atomic-u64 v2.2.1
+│           │   │       │   ├── solana-sanitize feature "default"
+│           │   │       │   │   └── solana-sanitize v2.2.1
+│           │   │       │   └── solana-sha256-hasher feature "default"
+│           │   │       │       └── solana-sha256-hasher v2.3.0
+│           │   │       │           ├── solana-hash v2.3.0
+│           │   │       │           │   ├── serde feature "default" (*)
+│           │   │       │           │   ├── serde_derive feature "default" (*)
+│           │   │       │           │   ├── bytemuck feature "default" (*)
+│           │   │       │           │   ├── bytemuck_derive feature "default" (*)
+│           │   │       │           │   ├── borsh feature "default" (*)
+│           │   │       │           │   ├── borsh feature "derive" (*)
+│           │   │       │           │   ├── borsh feature "unstable__schema" (*)
+│           │   │       │           │   ├── five8 feature "default" (*)
+│           │   │       │           │   ├── solana-atomic-u64 feature "default" (*)
+│           │   │       │           │   └── solana-sanitize feature "default" (*)
+│           │   │       │           └── sha2 feature "default" (*)
+│           │   │       ├── serde feature "default" (*)
+│           │   │       ├── bincode feature "default" (*)
+│           │   │       ├── solana-program-error feature "default"
+│           │   │       │   └── solana-program-error v2.2.2
+│           │   │       │       ├── solana-pubkey v2.4.0 (*)
+│           │   │       │       ├── serde feature "default" (*)
+│           │   │       │       ├── serde_derive feature "default" (*)
+│           │   │       │       ├── borsh feature "default" (*)
+│           │   │       │       ├── borsh feature "derive" (*)
+│           │   │       │       ├── borsh feature "unstable__schema" (*)
+│           │   │       │       ├── num-traits feature "default" (*)
+│           │   │       │       ├── solana-decode-error feature "default" (*)
+│           │   │       │       ├── solana-instruction feature "std"
+│           │   │       │       │   └── solana-instruction v2.3.3
+│           │   │       │       │       ├── solana-pubkey v2.4.0 (*)
+│           │   │       │       │       ├── serde feature "default" (*)
+│           │   │       │       │       ├── serde_derive feature "default" (*)
+│           │   │       │       │       ├── serde_json feature "default" (*)
+│           │   │       │       │       ├── bincode feature "default" (*)
+│           │   │       │       │       ├── borsh feature "default" (*)
+│           │   │       │       │       ├── borsh feature "derive" (*)
+│           │   │       │       │       ├── borsh feature "unstable__schema" (*)
+│           │   │       │       │       └── num-traits feature "default" (*)
+│           │   │       │       └── solana-msg feature "default"
+│           │   │       │           └── solana-msg v2.2.1
+│           │   │       └── solana-program-memory feature "default"
+│           │   │           └── solana-program-memory v2.3.1
+│           │   ├── solana-account-info feature "default"
+│           │   │   └── solana-account-info v2.3.0 (*)
+│           │   ├── solana-program-error feature "default" (*)
+│           │   ├── solana-program-error feature "serde"
+│           │   │   └── solana-program-error v2.2.2 (*)
+│           │   ├── solana-decode-error feature "default" (*)
+│           │   ├── solana-instruction feature "bincode"
+│           │   │   └── solana-instruction v2.3.3 (*)
+│           │   ├── solana-instruction feature "serde"
+│           │   │   ├── solana-instruction v2.3.3 (*)
+│           │   │   └── solana-pubkey feature "serde"
+│           │   │       └── solana-pubkey v2.4.0 (*)
+│           │   ├── solana-instruction feature "std" (*)
+│           │   ├── solana-instruction feature "syscalls"
+│           │   │   ├── solana-instruction v2.3.3 (*)
+│           │   │   └── solana-instruction feature "std" (*)
+│           │   ├── solana-pubkey feature "bytemuck"
+│           │   │   └── solana-pubkey v2.4.0 (*)
+│           │   ├── solana-pubkey feature "curve25519"
+│           │   │   ├── solana-pubkey v2.4.0 (*)
+│           │   │   └── solana-pubkey feature "sha2"
+│           │   │       ├── solana-pubkey v2.4.0 (*)
+│           │   │       ├── solana-pubkey feature "solana-sha256-hasher"
+│           │   │       │   └── solana-pubkey v2.4.0 (*)
+│           │   │       └── solana-sha256-hasher feature "sha2"
+│           │   │           └── solana-sha256-hasher v2.3.0 (*)
+│           │   ├── solana-pubkey feature "serde" (*)
+│           │   ├── solana-pubkey feature "std"
+│           │   │   └── solana-pubkey v2.4.0 (*)
+│           │   ├── solana-atomic-u64 feature "default" (*)
+│           │   ├── solana-sanitize feature "default" (*)
+│           │   ├── solana-sha256-hasher feature "default" (*)
+│           │   ├── solana-sha256-hasher feature "sha2" (*)
+│           │   ├── solana-hash feature "bytemuck"
+│           │   │   └── solana-hash v2.3.0 (*)
+│           │   ├── solana-hash feature "serde"
+│           │   │   └── solana-hash v2.3.0 (*)
+│           │   ├── solana-hash feature "std"
+│           │   │   └── solana-hash v2.3.0 (*)
+│           │   ├── solana-msg feature "default" (*)
+│           │   ├── solana-program-memory feature "default" (*)
+│           │   ├── solana-address-lookup-table-interface feature "bincode"
+│           │   │   ├── solana-address-lookup-table-interface v2.2.2
+│           │   │   │   ├── solana-pubkey v2.4.0 (*)
+│           │   │   │   ├── serde feature "default" (*)
+│           │   │   │   ├── serde_derive feature "default" (*)
+│           │   │   │   ├── bincode feature "default" (*)
+│           │   │   │   ├── bytemuck feature "default" (*)
+│           │   │   │   ├── solana-instruction feature "std" (*)
+│           │   │   │   ├── solana-pubkey feature "curve25519" (*)
+│           │   │   │   ├── solana-clock feature "default"
+│           │   │   │   │   └── solana-clock v2.2.2
+│           │   │   │   │       ├── serde feature "default" (*)
+│           │   │   │   │       ├── serde_derive feature "default" (*)
+│           │   │   │   │       ├── solana-sdk-ids feature "default"
+│           │   │   │   │       │   └── solana-sdk-ids v2.2.1
+│           │   │   │   │       │       └── solana-pubkey v2.4.0 (*)
+│           │   │   │   │       ├── solana-sdk-macro feature "default"
+│           │   │   │   │       │   └── solana-sdk-macro v2.2.1 (proc-macro)
+│           │   │   │   │       │       ├── proc-macro2 feature "default" (*)
+│           │   │   │   │       │       ├── quote feature "default" (*)
+│           │   │   │   │       │       ├── syn feature "default" (*)
+│           │   │   │   │       │       ├── syn feature "full" (*)
+│           │   │   │   │       │       └── bs58 feature "alloc" (*)
+│           │   │   │   │       └── solana-sysvar-id feature "default"
+│           │   │   │   │           └── solana-sysvar-id v2.2.1
+│           │   │   │   │               ├── solana-pubkey v2.4.0 (*)
+│           │   │   │   │               └── solana-sdk-ids feature "default" (*)
+│           │   │   │   ├── solana-sdk-ids feature "default" (*)
+│           │   │   │   └── solana-slot-hashes feature "default"
+│           │   │   │       └── solana-slot-hashes v2.2.1
+│           │   │   │           ├── solana-hash v2.3.0 (*)
+│           │   │   │           ├── serde feature "default" (*)
+│           │   │   │           ├── serde_derive feature "default" (*)
+│           │   │   │           ├── solana-sdk-ids feature "default" (*)
+│           │   │   │           └── solana-sysvar-id feature "default" (*)
+│           │   │   ├── solana-instruction feature "bincode" (*)
+│           │   │   ├── solana-address-lookup-table-interface feature "serde"
+│           │   │   │   ├── solana-address-lookup-table-interface v2.2.2 (*)
+│           │   │   │   └── solana-pubkey feature "serde" (*)
+│           │   │   └── solana-address-lookup-table-interface feature "solana-instruction"
+│           │   │       └── solana-address-lookup-table-interface v2.2.2 (*)
+│           │   ├── solana-address-lookup-table-interface feature "bytemuck"
+│           │   │   ├── solana-address-lookup-table-interface v2.2.2 (*)
+│           │   │   └── solana-pubkey feature "bytemuck" (*)
+│           │   ├── solana-address-lookup-table-interface feature "default"
+│           │   │   └── solana-address-lookup-table-interface v2.2.2 (*)
+│           │   ├── solana-clock feature "default" (*)
+│           │   ├── solana-clock feature "serde"
+│           │   │   └── solana-clock v2.2.2 (*)
+│           │   ├── solana-clock feature "sysvar"
+│           │   │   └── solana-clock v2.2.2 (*)
+│           │   ├── solana-sdk-ids feature "default" (*)
+│           │   ├── solana-sdk-macro feature "default" (*)
+│           │   ├── solana-sysvar-id feature "default" (*)
+│           │   ├── solana-slot-hashes feature "default" (*)
+│           │   ├── solana-slot-hashes feature "serde"
+│           │   │   ├── solana-slot-hashes v2.2.1 (*)
+│           │   │   └── solana-hash feature "serde" (*)
+│           │   ├── solana-slot-hashes feature "sysvar"
+│           │   │   └── solana-slot-hashes v2.2.1 (*)
+│           │   ├── solana-big-mod-exp feature "default"
+│           │   │   └── solana-big-mod-exp v2.2.1
+│           │   │       ├── num-bigint feature "default" (*)
+│           │   │       └── num-traits feature "default" (*)
+│           │   ├── solana-bincode feature "default"
+│           │   │   └── solana-bincode v2.2.1
+│           │   │       ├── serde feature "default" (*)
+│           │   │       ├── bincode feature "default" (*)
+│           │   │       └── solana-instruction feature "std" (*)
+│           │   ├── solana-blake3-hasher feature "blake3"
+│           │   │   └── solana-blake3-hasher v2.2.1
+│           │   │       ├── solana-hash v2.3.0 (*)
+│           │   │       ├── blake3 feature "default" (*)
+│           │   │       └── solana-sanitize feature "default" (*)
+│           │   ├── solana-blake3-hasher feature "default"
+│           │   │   └── solana-blake3-hasher v2.2.1 (*)
+│           │   ├── solana-borsh feature "default"
+│           │   │   └── solana-borsh v2.2.1
+│           │   │       ├── borsh feature "default" (*)
+│           │   │       ├── borsh feature "default" (*)
+│           │   │       ├── borsh feature "derive" (*)
+│           │   │       └── borsh feature "unstable__schema" (*)
+│           │   ├── solana-cpi feature "default"
+│           │   │   └── solana-cpi v2.2.1
+│           │   │       ├── solana-instruction v2.3.3 (*)
+│           │   │       ├── solana-pubkey v2.4.0 (*)
+│           │   │       ├── solana-account-info feature "default" (*)
+│           │   │       └── solana-program-error feature "default" (*)
+│           │   ├── solana-epoch-rewards feature "default"
+│           │   │   └── solana-epoch-rewards v2.2.1
+│           │   │       ├── solana-hash v2.3.0 (*)
+│           │   │       ├── serde feature "default" (*)
+│           │   │       ├── serde_derive feature "default" (*)
+│           │   │       ├── solana-sdk-ids feature "default" (*)
+│           │   │       ├── solana-sdk-macro feature "default" (*)
+│           │   │       └── solana-sysvar-id feature "default" (*)
+│           │   ├── solana-epoch-rewards feature "serde"
+│           │   │   ├── solana-epoch-rewards v2.2.1 (*)
+│           │   │   └── solana-hash feature "serde" (*)
+│           │   ├── solana-epoch-rewards feature "sysvar"
+│           │   │   └── solana-epoch-rewards v2.2.1 (*)
+│           │   ├── solana-epoch-schedule feature "default"
+│           │   │   └── solana-epoch-schedule v2.2.1
+│           │   │       ├── serde feature "default" (*)
+│           │   │       ├── serde_derive feature "default" (*)
+│           │   │       ├── solana-sdk-ids feature "default" (*)
+│           │   │       ├── solana-sdk-macro feature "default" (*)
+│           │   │       └── solana-sysvar-id feature "default" (*)
+│           │   ├── solana-epoch-schedule feature "serde"
+│           │   │   └── solana-epoch-schedule v2.2.1 (*)
+│           │   ├── solana-epoch-schedule feature "sysvar"
+│           │   │   └── solana-epoch-schedule v2.2.1 (*)
+│           │   ├── solana-example-mocks feature "default"
+│           │   │   └── solana-example-mocks v2.2.1
+│           │   │       ├── solana-hash v2.3.0 (*)
+│           │   │       ├── solana-instruction v2.3.3 (*)
+│           │   │       ├── solana-pubkey v2.4.0 (*)
+│           │   │       ├── serde feature "default" (*)
+│           │   │       ├── serde_derive feature "default" (*)
+│           │   │       ├── solana-address-lookup-table-interface feature "default" (*)
+│           │   │       ├── solana-clock feature "default" (*)
+│           │   │       ├── solana-sdk-ids feature "default" (*)
+│           │   │       ├── solana-keccak-hasher feature "default"
+│           │   │       │   └── solana-keccak-hasher v2.2.1
+│           │   │       │       ├── solana-hash v2.3.0 (*)
+│           │   │       │       ├── solana-sanitize feature "default" (*)
+│           │   │       │       └── sha3 feature "default"
+│           │   │       │           ├── sha3 v0.10.8
+│           │   │       │           │   ├── digest feature "default" (*)
+│           │   │       │           │   └── keccak feature "default"
+│           │   │       │           │       └── keccak v0.1.5
+│           │   │       │           │           └── cpufeatures feature "default" (*)
+│           │   │       │           └── sha3 feature "std"
+│           │   │       │               ├── sha3 v0.10.8 (*)
+│           │   │       │               └── digest feature "std"
+│           │   │       │                   ├── digest v0.10.7 (*)
+│           │   │       │                   ├── digest feature "alloc"
+│           │   │       │                   │   └── digest v0.10.7 (*)
+│           │   │       │                   └── crypto-common feature "std"
+│           │   │       │                       └── crypto-common v0.1.7 (*)
+│           │   │       ├── solana-message feature "default"
+│           │   │       │   └── solana-message v2.4.0
+│           │   │       │       ├── solana-hash v2.3.0 (*)
+│           │   │       │       ├── solana-pubkey v2.4.0 (*)
+│           │   │       │       ├── serde feature "default" (*)
+│           │   │       │       ├── serde_derive feature "default" (*)
+│           │   │       │       ├── bincode feature "default" (*)
+│           │   │       │       ├── blake3 feature "default" (*)
+│           │   │       │       ├── blake3 feature "traits-preview" (*)
+│           │   │       │       ├── lazy_static feature "default" (*)
+│           │   │       │       ├── solana-instruction feature "std" (*)
+│           │   │       │       ├── solana-sanitize feature "default" (*)
+│           │   │       │       ├── solana-sdk-ids feature "default" (*)
+│           │   │       │       ├── solana-bincode feature "default" (*)
+│           │   │       │       ├── solana-short-vec feature "default"
+│           │   │       │       │   └── solana-short-vec v2.2.1
+│           │   │       │       │       └── serde feature "default" (*)
+│           │   │       │       ├── solana-system-interface feature "bincode"
+│           │   │       │       │   ├── solana-system-interface v1.0.0
+│           │   │       │       │   │   ├── solana-pubkey v2.4.0 (*)
+│           │   │       │       │   │   ├── serde feature "default" (*)
+│           │   │       │       │   │   ├── serde_derive feature "default" (*)
+│           │   │       │       │   │   ├── num-traits feature "default" (*)
+│           │   │       │       │   │   ├── solana-decode-error feature "default" (*)
+│           │   │       │       │   │   ├── solana-instruction feature "bincode" (*)
+│           │   │       │       │   │   ├── solana-instruction feature "default"
+│           │   │       │       │   │   │   ├── solana-instruction v2.3.3 (*)
+│           │   │       │       │   │   │   └── solana-instruction feature "std" (*)
+│           │   │       │       │   │   └── solana-instruction feature "std" (*)
+│           │   │       │       │   └── solana-system-interface feature "serde"
+│           │   │       │       │       ├── solana-system-interface v1.0.0 (*)
+│           │   │       │       │       └── solana-pubkey feature "serde" (*)
+│           │   │       │       ├── solana-system-interface feature "default"
+│           │   │       │       │   └── solana-system-interface v1.0.0 (*)
+│           │   │       │       └── solana-transaction-error feature "default"
+│           │   │       │           └── solana-transaction-error v2.2.1
+│           │   │       │               ├── solana-instruction feature "std" (*)
+│           │   │       │               └── solana-sanitize feature "default" (*)
+│           │   │       ├── solana-message feature "serde"
+│           │   │       │   ├── solana-message v2.4.0 (*)
+│           │   │       │   ├── solana-pubkey feature "serde" (*)
+│           │   │       │   └── solana-hash feature "serde" (*)
+│           │   │       ├── solana-system-interface feature "default" (*)
+│           │   │       ├── solana-nonce feature "default"
+│           │   │       │   └── solana-nonce v2.2.1
+│           │   │       │       ├── solana-hash v2.3.0 (*)
+│           │   │       │       ├── solana-pubkey v2.4.0 (*)
+│           │   │       │       ├── serde feature "default" (*)
+│           │   │       │       ├── serde_derive feature "default" (*)
+│           │   │       │       ├── solana-sha256-hasher feature "default" (*)
+│           │   │       │       └── solana-fee-calculator feature "default"
+│           │   │       │           └── solana-fee-calculator v2.2.1
+│           │   │       │               ├── serde feature "default" (*)
+│           │   │       │               ├── serde_derive feature "default" (*)
+│           │   │       │               └── log feature "default" (*)
+│           │   │       └── thiserror feature "default"
+│           │   │           ├── thiserror v2.0.17
+│           │   │           │   └── thiserror-impl feature "default"
+│           │   │           │       └── thiserror-impl v2.0.17 (proc-macro)
+│           │   │           │           ├── proc-macro2 feature "default" (*)
+│           │   │           │           ├── quote feature "default" (*)
+│           │   │           │           └── syn feature "default" (*)
+│           │   │           └── thiserror feature "std"
+│           │   │               └── thiserror v2.0.17 (*)
+│           │   ├── solana-keccak-hasher feature "default" (*)
+│           │   ├── solana-keccak-hasher feature "sha3"
+│           │   │   └── solana-keccak-hasher v2.2.1 (*)
+│           │   ├── solana-message feature "bincode"
+│           │   │   ├── solana-message v2.4.0 (*)
+│           │   │   └── solana-message feature "serde" (*)
+│           │   ├── solana-message feature "blake3"
+│           │   │   └── solana-message v2.4.0 (*)
+│           │   ├── solana-message feature "default" (*)
+│           │   ├── solana-short-vec feature "default" (*)
+│           │   ├── solana-system-interface feature "bincode" (*)
+│           │   ├── solana-system-interface feature "default" (*)
+│           │   ├── solana-nonce feature "default" (*)
+│           │   ├── solana-nonce feature "serde"
+│           │   │   ├── solana-nonce v2.2.1 (*)
+│           │   │   ├── solana-pubkey feature "serde" (*)
+│           │   │   ├── solana-hash feature "serde" (*)
+│           │   │   └── solana-fee-calculator feature "serde"
+│           │   │       └── solana-fee-calculator v2.2.1 (*)
+│           │   ├── solana-fee-calculator feature "default" (*)
+│           │   ├── solana-fee-calculator feature "serde" (*)
+│           │   ├── thiserror feature "default" (*)
+│           │   ├── solana-feature-gate-interface feature "bincode"
+│           │   │   ├── solana-feature-gate-interface v2.2.2
+│           │   │   │   ├── solana-instruction v2.3.3 (*)
+│           │   │   │   ├── solana-pubkey v2.4.0 (*)
+│           │   │   │   ├── solana-rent v2.2.1
+│           │   │   │   │   ├── serde feature "default" (*)
+│           │   │   │   │   ├── serde_derive feature "default" (*)
+│           │   │   │   │   ├── solana-sdk-ids feature "default" (*)
+│           │   │   │   │   ├── solana-sdk-macro feature "default" (*)
+│           │   │   │   │   └── solana-sysvar-id feature "default" (*)
+│           │   │   │   ├── serde feature "default" (*)
+│           │   │   │   ├── serde_derive feature "default" (*)
+│           │   │   │   ├── bincode feature "default" (*)
+│           │   │   │   ├── solana-account-info feature "default" (*)
+│           │   │   │   ├── solana-program-error feature "default" (*)
+│           │   │   │   ├── solana-sdk-ids feature "default" (*)
+│           │   │   │   ├── solana-system-interface feature "bincode" (*)
+│           │   │   │   ├── solana-system-interface feature "default" (*)
+│           │   │   │   └── solana-account feature "default"
+│           │   │   │       └── solana-account v2.2.1
+│           │   │   │           ├── solana-instruction v2.3.3 (*)
+│           │   │   │           ├── solana-pubkey v2.4.0 (*)
+│           │   │   │           ├── solana-account-info feature "default" (*)
+│           │   │   │           ├── solana-clock feature "default" (*)
+│           │   │   │           └── solana-sdk-ids feature "default" (*)
+│           │   │   └── solana-feature-gate-interface feature "serde"
+│           │   │       └── solana-feature-gate-interface v2.2.2 (*)
+│           │   ├── solana-feature-gate-interface feature "default"
+│           │   │   └── solana-feature-gate-interface v2.2.2 (*)
+│           │   ├── solana-rent feature "serde"
+│           │   │   └── solana-rent v2.2.1 (*)
+│           │   ├── solana-rent feature "sysvar"
+│           │   │   └── solana-rent v2.2.1 (*)
+│           │   ├── solana-instructions-sysvar feature "default"
+│           │   │   └── solana-instructions-sysvar v2.2.2
+│           │   │       ├── solana-instruction v2.3.3 (*)
+│           │   │       ├── solana-pubkey v2.4.0 (*)
+│           │   │       ├── solana-account-info feature "default" (*)
+│           │   │       ├── solana-program-error feature "default" (*)
+│           │   │       ├── solana-sanitize feature "default" (*)
+│           │   │       ├── solana-sdk-ids feature "default" (*)
+│           │   │       ├── solana-sysvar-id feature "default" (*)
+│           │   │       ├── bitflags feature "default"
+│           │   │       │   └── bitflags v2.10.0
+│           │   │       └── solana-serialize-utils feature "default"
+│           │   │           └── solana-serialize-utils v2.2.1
+│           │   │               ├── solana-pubkey v2.4.0 (*)
+│           │   │               ├── solana-instruction feature "std" (*)
+│           │   │               └── solana-sanitize feature "default" (*)
+│           │   ├── solana-serialize-utils feature "default" (*)
+│           │   ├── solana-last-restart-slot feature "default"
+│           │   │   └── solana-last-restart-slot v2.2.1
+│           │   │       ├── serde feature "default" (*)
+│           │   │       ├── serde_derive feature "default" (*)
+│           │   │       ├── solana-sdk-ids feature "default" (*)
+│           │   │       ├── solana-sdk-macro feature "default" (*)
+│           │   │       └── solana-sysvar-id feature "default" (*)
+│           │   ├── solana-last-restart-slot feature "serde"
+│           │   │   └── solana-last-restart-slot v2.2.1 (*)
+│           │   ├── solana-last-restart-slot feature "sysvar"
+│           │   │   └── solana-last-restart-slot v2.2.1 (*)
+│           │   ├── solana-loader-v2-interface feature "bincode"
+│           │   │   ├── solana-loader-v2-interface v2.2.1
+│           │   │   │   ├── solana-pubkey v2.4.0 (*)
+│           │   │   │   ├── serde feature "default" (*)
+│           │   │   │   ├── serde_derive feature "default" (*)
+│           │   │   │   ├── serde_bytes feature "default" (*)
+│           │   │   │   ├── solana-instruction feature "bincode" (*)
+│           │   │   │   ├── solana-instruction feature "std" (*)
+│           │   │   │   └── solana-sdk-ids feature "default" (*)
+│           │   │   └── solana-loader-v2-interface feature "serde"
+│           │   │       └── solana-loader-v2-interface v2.2.1 (*)
+│           │   ├── solana-loader-v2-interface feature "default"
+│           │   │   └── solana-loader-v2-interface v2.2.1 (*)
+│           │   ├── solana-loader-v3-interface feature "bincode"
+│           │   │   ├── solana-loader-v3-interface v5.0.0
+│           │   │   │   ├── serde feature "default" (*)
+│           │   │   │   ├── serde_derive feature "default" (*)
+│           │   │   │   ├── serde_bytes feature "default" (*)
+│           │   │   │   ├── solana-instruction feature "std" (*)
+│           │   │   │   ├── solana-pubkey feature "curve25519" (*)
+│           │   │   │   ├── solana-sdk-ids feature "default" (*)
+│           │   │   │   ├── solana-system-interface feature "bincode" (*)
+│           │   │   │   └── solana-system-interface feature "default" (*)
+│           │   │   ├── solana-instruction feature "bincode" (*)
+│           │   │   └── solana-loader-v3-interface feature "serde"
+│           │   │       ├── solana-loader-v3-interface v5.0.0 (*)
+│           │   │       └── solana-pubkey feature "serde" (*)
+│           │   ├── solana-loader-v3-interface feature "default"
+│           │   │   └── solana-loader-v3-interface v5.0.0 (*)
+│           │   ├── solana-loader-v4-interface feature "bincode"
+│           │   │   ├── solana-loader-v4-interface v2.2.1
+│           │   │   │   ├── solana-pubkey v2.4.0 (*)
+│           │   │   │   ├── serde feature "default" (*)
+│           │   │   │   ├── serde_derive feature "default" (*)
+│           │   │   │   ├── serde_bytes feature "default" (*)
+│           │   │   │   ├── solana-instruction feature "std" (*)
+│           │   │   │   ├── solana-sdk-ids feature "default" (*)
+│           │   │   │   ├── solana-system-interface feature "bincode" (*)
+│           │   │   │   └── solana-system-interface feature "default" (*)
+│           │   │   ├── solana-instruction feature "bincode" (*)
+│           │   │   └── solana-loader-v4-interface feature "serde"
+│           │   │       ├── solana-loader-v4-interface v2.2.1 (*)
+│           │   │       └── solana-pubkey feature "serde" (*)
+│           │   ├── solana-loader-v4-interface feature "default"
+│           │   │   └── solana-loader-v4-interface v2.2.1 (*)
+│           │   ├── solana-native-token feature "default"
+│           │   │   └── solana-native-token v2.3.0
+│           │   ├── solana-program-entrypoint feature "default"
+│           │   │   └── solana-program-entrypoint v2.3.0
+│           │   │       ├── solana-pubkey v2.4.0 (*)
+│           │   │       ├── solana-account-info feature "default" (*)
+│           │   │       ├── solana-program-error feature "default" (*)
+│           │   │       └── solana-msg feature "default" (*)
+│           │   ├── solana-program-option feature "default"
+│           │   │   └── solana-program-option v2.2.1
+│           │   ├── solana-program-pack feature "default"
+│           │   │   └── solana-program-pack v2.2.1
+│           │   │       └── solana-program-error feature "default" (*)
+│           │   ├── solana-secp256k1-recover feature "default"
+│           │   │   └── solana-secp256k1-recover v2.2.1
+│           │   │       ├── thiserror feature "default" (*)
+│           │   │       ├── libsecp256k1 feature "static-context"
+│           │   │       │   └── libsecp256k1 v0.6.0
+│           │   │       │       ├── base64 v0.12.3
+│           │   │       │       ├── libsecp256k1-core v0.2.2
+│           │   │       │       │   ├── subtle v2.6.1
+│           │   │       │       │   ├── digest feature "default"
+│           │   │       │       │   │   └── digest v0.9.0
+│           │   │       │       │   │       └── generic-array feature "default" (*)
+│           │   │       │       │   └── crunchy feature "default"
+│           │   │       │       │       ├── crunchy v0.2.4
+│           │   │       │       │       └── crunchy feature "limit_128"
+│           │   │       │       │           └── crunchy v0.2.4
+│           │   │       │       ├── rand v0.7.3
+│           │   │       │       │   ├── libc v0.2.180
+│           │   │       │       │   ├── rand_chacha v0.2.2
+│           │   │       │       │   │   ├── ppv-lite86 feature "simd" (*)
+│           │   │       │       │   │   └── rand_core feature "default"
+│           │   │       │       │   │       └── rand_core v0.5.1
+│           │   │       │       │   │           └── getrandom feature "default"
+│           │   │       │       │   │               └── getrandom v0.1.16
+│           │   │       │       │   │                   ├── libc v0.2.180
+│           │   │       │       │   │                   └── cfg-if feature "default" (*)
+│           │   │       │       │   ├── getrandom feature "default" (*)
+│           │   │       │       │   └── rand_core feature "default" (*)
+│           │   │       │       ├── sha2 v0.9.9
+│           │   │       │       │   ├── cfg-if feature "default" (*)
+│           │   │       │       │   ├── cpufeatures feature "default" (*)
+│           │   │       │       │   ├── digest feature "default" (*)
+│           │   │       │       │   ├── block-buffer feature "default"
+│           │   │       │       │   │   └── block-buffer v0.9.0
+│           │   │       │       │   │       └── generic-array feature "default" (*)
+│           │   │       │       │   └── opaque-debug feature "default"
+│           │   │       │       │       └── opaque-debug v0.3.1
+│           │   │       │       ├── serde feature "derive" (*)
+│           │   │       │       ├── arrayref feature "default" (*)
+│           │   │       │       └── digest feature "default" (*)
+│           │   │       │       [build-dependencies]
+│           │   │       │       ├── libsecp256k1-gen-ecmult feature "default"
+│           │   │       │       │   └── libsecp256k1-gen-ecmult v0.2.1
+│           │   │       │       │       └── libsecp256k1-core feature "default"
+│           │   │       │       │           ├── libsecp256k1-core v0.2.2
+│           │   │       │       │           │   ├── subtle v2.6.1
+│           │   │       │       │           │   ├── crunchy feature "default" (*)
+│           │   │       │       │           │   └── digest feature "default"
+│           │   │       │       │           │       └── digest v0.9.0
+│           │   │       │       │           │           └── generic-array feature "default" (*)
+│           │   │       │       │           └── libsecp256k1-core feature "std"
+│           │   │       │       │               ├── libsecp256k1-core v0.2.2 (*)
+│           │   │       │       │               └── subtle feature "std"
+│           │   │       │       │                   └── subtle v2.6.1
+│           │   │       │       └── libsecp256k1-gen-genmult feature "default"
+│           │   │       │           └── libsecp256k1-gen-genmult v0.2.1
+│           │   │       │               └── libsecp256k1-core feature "default" (*)
+│           │   │       └── libsecp256k1 feature "std"
+│           │   │           ├── libsecp256k1 v0.6.0 (*)
+│           │   │           ├── serde feature "std" (*)
+│           │   │           ├── libsecp256k1 feature "sha2"
+│           │   │           │   └── libsecp256k1 v0.6.0 (*)
+│           │   │           ├── base64 feature "std"
+│           │   │           │   └── base64 v0.12.3
+│           │   │           ├── libsecp256k1-core feature "std"
+│           │   │           │   ├── libsecp256k1-core v0.2.2 (*)
+│           │   │           │   └── subtle feature "std"
+│           │   │           │       └── subtle v2.6.1
+│           │   │           ├── rand feature "std"
+│           │   │           │   ├── rand v0.7.3 (*)
+│           │   │           │   ├── rand feature "alloc"
+│           │   │           │   │   ├── rand v0.7.3 (*)
+│           │   │           │   │   └── rand_core feature "alloc"
+│           │   │           │   │       └── rand_core v0.5.1 (*)
+│           │   │           │   ├── rand feature "getrandom"
+│           │   │           │   │   ├── rand v0.7.3 (*)
+│           │   │           │   │   ├── rand feature "getrandom_package"
+│           │   │           │   │   │   └── rand v0.7.3 (*)
+│           │   │           │   │   └── rand_core feature "getrandom"
+│           │   │           │   │       └── rand_core v0.5.1 (*)
+│           │   │           │   ├── rand feature "libc"
+│           │   │           │   │   └── rand v0.7.3 (*)
+│           │   │           │   ├── rand_chacha feature "std"
+│           │   │           │   │   ├── rand_chacha v0.2.2 (*)
+│           │   │           │   │   └── ppv-lite86 feature "std" (*)
+│           │   │           │   └── rand_core feature "std"
+│           │   │           │       ├── rand_core v0.5.1 (*)
+│           │   │           │       ├── getrandom feature "std"
+│           │   │           │       │   └── getrandom v0.1.16 (*)
+│           │   │           │       ├── rand_core feature "alloc" (*)
+│           │   │           │       └── rand_core feature "getrandom" (*)
+│           │   │           └── sha2 feature "std"
+│           │   │               ├── sha2 v0.9.9 (*)
+│           │   │               └── digest feature "std"
+│           │   │                   ├── digest v0.9.0 (*)
+│           │   │                   └── digest feature "alloc"
+│           │   │                       └── digest v0.9.0 (*)
+│           │   ├── solana-serde-varint feature "default"
+│           │   │   └── solana-serde-varint v2.2.2
+│           │   │       └── serde feature "default" (*)
+│           │   ├── solana-slot-history feature "default"
+│           │   │   └── solana-slot-history v2.2.1
+│           │   │       ├── serde feature "default" (*)
+│           │   │       ├── serde_derive feature "default" (*)
+│           │   │       ├── solana-sdk-ids feature "default" (*)
+│           │   │       ├── solana-sysvar-id feature "default" (*)
+│           │   │       └── bv feature "default"
+│           │   │           └── bv v0.11.1
+│           │   │               ├── serde feature "default" (*)
+│           │   │               └── serde feature "derive" (*)
+│           │   │               [build-dependencies]
+│           │   │               └── feature-probe feature "default"
+│           │   │                   └── feature-probe v0.1.1
+│           │   ├── solana-slot-history feature "serde"
+│           │   │   ├── solana-slot-history v2.2.1 (*)
+│           │   │   └── bv feature "serde"
+│           │   │       └── bv v0.11.1 (*)
+│           │   ├── solana-slot-history feature "sysvar"
+│           │   │   └── solana-slot-history v2.2.1 (*)
+│           │   ├── solana-stable-layout feature "default"
+│           │   │   └── solana-stable-layout v2.2.1
+│           │   │       ├── solana-pubkey v2.4.0 (*)
+│           │   │       └── solana-instruction feature "std" (*)
+│           │   ├── solana-stake-interface feature "bincode"
+│           │   │   ├── solana-stake-interface v1.2.1
+│           │   │   │   ├── solana-pubkey v2.4.0 (*)
+│           │   │   │   ├── serde feature "default" (*)
+│           │   │   │   ├── serde_derive feature "default" (*)
+│           │   │   │   ├── borsh feature "default" (*)
+│           │   │   │   ├── borsh feature "default" (*)
+│           │   │   │   ├── borsh feature "derive" (*)
+│           │   │   │   ├── borsh feature "unstable__schema" (*)
+│           │   │   │   ├── num-traits feature "default" (*)
+│           │   │   │   ├── solana-program-error feature "default" (*)
+│           │   │   │   ├── solana-decode-error feature "default" (*)
+│           │   │   │   ├── solana-instruction feature "default" (*)
+│           │   │   │   ├── solana-clock feature "default" (*)
+│           │   │   │   ├── solana-sysvar-id feature "default" (*)
+│           │   │   │   ├── solana-cpi feature "default" (*)
+│           │   │   │   └── solana-system-interface feature "default" (*)
+│           │   │   ├── solana-instruction feature "bincode" (*)
+│           │   │   ├── solana-instruction feature "serde" (*)
+│           │   │   ├── solana-system-interface feature "bincode" (*)
+│           │   │   └── solana-stake-interface feature "serde"
+│           │   │       ├── solana-stake-interface v1.2.1 (*)
+│           │   │       └── solana-pubkey feature "serde" (*)
+│           │   ├── solana-stake-interface feature "default"
+│           │   │   └── solana-stake-interface v1.2.1 (*)
+│           │   ├── solana-sysvar feature "bincode"
+│           │   │   ├── solana-sysvar v2.3.0
+│           │   │   │   ├── solana-instruction v2.3.3 (*)
+│           │   │   │   ├── solana-pubkey v2.4.0 (*)
+│           │   │   │   ├── serde feature "default" (*)
+│           │   │   │   ├── serde_derive feature "default" (*)
+│           │   │   │   ├── bincode feature "default" (*)
+│           │   │   │   ├── bytemuck feature "default" (*)
+│           │   │   │   ├── bytemuck_derive feature "default" (*)
+│           │   │   │   ├── lazy_static feature "default" (*)
+│           │   │   │   ├── solana-account-info feature "default" (*)
+│           │   │   │   ├── solana-program-error feature "default" (*)
+│           │   │   │   ├── solana-sanitize feature "default" (*)
+│           │   │   │   ├── solana-hash feature "bytemuck" (*)
+│           │   │   │   ├── solana-program-memory feature "default" (*)
+│           │   │   │   ├── solana-clock feature "default" (*)
+│           │   │   │   ├── solana-clock feature "sysvar" (*)
+│           │   │   │   ├── solana-sdk-ids feature "default" (*)
+│           │   │   │   ├── solana-sdk-macro feature "default" (*)
+│           │   │   │   ├── solana-sysvar-id feature "default" (*)
+│           │   │   │   ├── solana-slot-hashes feature "default" (*)
+│           │   │   │   ├── solana-slot-hashes feature "sysvar" (*)
+│           │   │   │   ├── solana-epoch-rewards feature "default" (*)
+│           │   │   │   ├── solana-epoch-rewards feature "sysvar" (*)
+│           │   │   │   ├── solana-epoch-schedule feature "default" (*)
+│           │   │   │   ├── solana-epoch-schedule feature "sysvar" (*)
+│           │   │   │   ├── solana-fee-calculator feature "default" (*)
+│           │   │   │   ├── solana-rent feature "sysvar" (*)
+│           │   │   │   ├── solana-instructions-sysvar feature "default" (*)
+│           │   │   │   ├── solana-last-restart-slot feature "default" (*)
+│           │   │   │   ├── solana-last-restart-slot feature "sysvar" (*)
+│           │   │   │   ├── solana-program-entrypoint feature "default" (*)
+│           │   │   │   ├── solana-slot-history feature "default" (*)
+│           │   │   │   ├── solana-slot-history feature "sysvar" (*)
+│           │   │   │   ├── solana-stake-interface feature "default" (*)
+│           │   │   │   └── base64 feature "default"
+│           │   │   │       ├── base64 v0.22.1
+│           │   │   │       └── base64 feature "std"
+│           │   │   │           ├── base64 v0.22.1
+│           │   │   │           └── base64 feature "alloc"
+│           │   │   │               └── base64 v0.22.1
+│           │   │   ├── solana-stake-interface feature "bincode" (*)
+│           │   │   └── solana-sysvar feature "serde"
+│           │   │       ├── solana-sysvar v2.3.0 (*)
+│           │   │       ├── solana-clock feature "serde" (*)
+│           │   │       ├── solana-slot-hashes feature "serde" (*)
+│           │   │       ├── solana-epoch-rewards feature "serde" (*)
+│           │   │       ├── solana-epoch-schedule feature "serde" (*)
+│           │   │       ├── solana-fee-calculator feature "serde" (*)
+│           │   │       ├── solana-rent feature "serde" (*)
+│           │   │       ├── solana-last-restart-slot feature "serde" (*)
+│           │   │       ├── solana-slot-history feature "serde" (*)
+│           │   │       └── solana-stake-interface feature "serde" (*)
+│           │   ├── solana-sysvar feature "bytemuck"
+│           │   │   └── solana-sysvar v2.3.0 (*)
+│           │   ├── solana-sysvar feature "default"
+│           │   │   └── solana-sysvar v2.3.0 (*)
+│           │   ├── solana-vote-interface feature "bincode"
+│           │   │   ├── solana-vote-interface v2.2.6
+│           │   │   │   ├── solana-hash v2.3.0 (*)
+│           │   │   │   ├── solana-pubkey v2.4.0 (*)
+│           │   │   │   ├── solana-rent v2.2.1 (*)
+│           │   │   │   ├── serde feature "default" (*)
+│           │   │   │   ├── serde_derive feature "default" (*)
+│           │   │   │   ├── bincode feature "default" (*)
+│           │   │   │   ├── num-traits feature "default" (*)
+│           │   │   │   ├── num-derive feature "default" (*)
+│           │   │   │   ├── solana-decode-error feature "default" (*)
+│           │   │   │   ├── solana-instruction feature "std" (*)
+│           │   │   │   ├── solana-clock feature "default" (*)
+│           │   │   │   ├── solana-sdk-ids feature "default" (*)
+│           │   │   │   ├── solana-short-vec feature "default" (*)
+│           │   │   │   ├── solana-system-interface feature "bincode" (*)
+│           │   │   │   ├── solana-system-interface feature "default" (*)
+│           │   │   │   ├── solana-serialize-utils feature "default" (*)
+│           │   │   │   └── solana-serde-varint feature "default" (*)
+│           │   │   └── solana-vote-interface feature "serde"
+│           │   │       ├── solana-vote-interface v2.2.6 (*)
+│           │   │       ├── solana-pubkey feature "serde" (*)
+│           │   │       └── solana-hash feature "serde" (*)
+│           │   └── solana-vote-interface feature "default"
+│           │       └── solana-vote-interface v2.2.6 (*)
+│           └── solana-program feature "borsh"
+│               ├── solana-program v2.3.0 (*)
+│               ├── solana-program-error feature "borsh"
+│               │   └── solana-program-error v2.2.2 (*)
+│               ├── solana-instruction feature "borsh"
+│               │   └── solana-instruction v2.3.3 (*)
+│               ├── solana-pubkey feature "borsh"
+│               │   ├── solana-pubkey v2.4.0 (*)
+│               │   └── solana-pubkey feature "std" (*)
+│               ├── solana-hash feature "borsh"
+│               │   ├── solana-hash v2.3.0 (*)
+│               │   └── solana-hash feature "std" (*)
+│               └── solana-stake-interface feature "borsh"
+│                   ├── solana-stake-interface v1.2.1 (*)
+│                   ├── solana-program-error feature "borsh" (*)
+│                   ├── solana-instruction feature "borsh" (*)
+│                   └── solana-pubkey feature "borsh" (*)
+├── solana-program feature "default" (*)
+├── anchor-spl feature "default"
+│   ├── anchor-spl v0.31.1
+│   │   ├── anchor-lang feature "default" (*)
+│   │   ├── anchor-lang feature "derive"
+│   │   │   └── anchor-lang v0.31.1 (*)
+│   │   ├── spl-associated-token-account feature "default"
+│   │   │   └── spl-associated-token-account v6.0.0
+│   │   │       ├── thiserror feature "default" (*)
+│   │   │       ├── solana-program feature "default" (*)
+│   │   │       ├── borsh feature "default" (*)
+│   │   │       ├── num-traits feature "default" (*)
+│   │   │       ├── num-derive feature "default" (*)
+│   │   │       ├── spl-associated-token-account-client feature "default"
+│   │   │       │   └── spl-associated-token-account-client v2.0.0
+│   │   │       │       ├── solana-instruction feature "default" (*)
+│   │   │       │       ├── solana-instruction feature "std" (*)
+│   │   │       │       ├── solana-pubkey feature "curve25519" (*)
+│   │   │       │       └── solana-pubkey feature "default"
+│   │   │       │           ├── solana-pubkey v2.4.0 (*)
+│   │   │       │           └── solana-pubkey feature "std" (*)
+│   │   │       ├── spl-token feature "default"
+│   │   │       │   └── spl-token v7.0.0
+│   │   │       │       ├── thiserror feature "default" (*)
+│   │   │       │       ├── bytemuck feature "default" (*)
+│   │   │       │       ├── solana-program feature "default" (*)
+│   │   │       │       ├── arrayref feature "default" (*)
+│   │   │       │       ├── num-traits feature "default" (*)
+│   │   │       │       ├── num-derive feature "default" (*)
+│   │   │       │       └── num_enum feature "default"
+│   │   │       │           ├── num_enum v0.7.5
+│   │   │       │           │   ├── num_enum_derive v0.7.5 (proc-macro)
+│   │   │       │           │   │   ├── proc-macro2 feature "default" (*)
+│   │   │       │           │   │   ├── quote feature "default" (*)
+│   │   │       │           │   │   ├── syn feature "default" (*)
+│   │   │       │           │   │   ├── syn feature "derive" (*)
+│   │   │       │           │   │   ├── syn feature "extra-traits" (*)
+│   │   │       │           │   │   ├── syn feature "parsing" (*)
+│   │   │       │           │   │   └── proc-macro-crate feature "default" (*)
+│   │   │       │           │   └── rustversion feature "default"
+│   │   │       │           │       └── rustversion v1.0.22 (proc-macro)
+│   │   │       │           └── num_enum feature "std"
+│   │   │       │               ├── num_enum v0.7.5 (*)
+│   │   │       │               └── num_enum_derive feature "std"
+│   │   │       │                   ├── num_enum_derive v0.7.5 (proc-macro) (*)
+│   │   │       │                   └── num_enum_derive feature "proc-macro-crate"
+│   │   │       │                       └── num_enum_derive v0.7.5 (proc-macro) (*)
+│   │   │       ├── spl-token feature "no-entrypoint"
+│   │   │       │   └── spl-token v7.0.0 (*)
+│   │   │       ├── spl-token-2022 feature "default"
+│   │   │       │   ├── spl-token-2022 v6.0.0
+│   │   │       │   │   ├── thiserror feature "default" (*)
+│   │   │       │   │   ├── bytemuck feature "default" (*)
+│   │   │       │   │   ├── bytemuck feature "derive"
+│   │   │       │   │   │   ├── bytemuck v1.24.0 (*)
+│   │   │       │   │   │   └── bytemuck feature "bytemuck_derive"
+│   │   │       │   │   │       └── bytemuck v1.24.0 (*)
+│   │   │       │   │   ├── solana-program feature "default" (*)
+│   │   │       │   │   ├── arrayref feature "default" (*)
+│   │   │       │   │   ├── num-traits feature "default" (*)
+│   │   │       │   │   ├── num-derive feature "default" (*)
+│   │   │       │   │   ├── spl-token feature "default" (*)
+│   │   │       │   │   ├── spl-token feature "no-entrypoint" (*)
+│   │   │       │   │   ├── num_enum feature "default" (*)
+│   │   │       │   │   ├── solana-security-txt feature "default"
+│   │   │       │   │   │   └── solana-security-txt v1.1.2
+│   │   │       │   │   │       └── hashbrown feature "default"
+│   │   │       │   │   │           ├── hashbrown v0.15.2
+│   │   │       │   │   │           │   ├── equivalent v1.0.2
+│   │   │       │   │   │           │   ├── foldhash v0.1.5
+│   │   │       │   │   │           │   └── allocator-api2 feature "alloc"
+│   │   │       │   │   │           │       └── allocator-api2 v0.2.21
+│   │   │       │   │   │           ├── hashbrown feature "allocator-api2"
+│   │   │       │   │   │           │   └── hashbrown v0.15.2 (*)
+│   │   │       │   │   │           ├── hashbrown feature "default-hasher"
+│   │   │       │   │   │           │   └── hashbrown v0.15.2 (*)
+│   │   │       │   │   │           ├── hashbrown feature "equivalent"
+│   │   │       │   │   │           │   └── hashbrown v0.15.2 (*)
+│   │   │       │   │   │           ├── hashbrown feature "inline-more"
+│   │   │       │   │   │           │   └── hashbrown v0.15.2 (*)
+│   │   │       │   │   │           └── hashbrown feature "raw-entry"
+│   │   │       │   │   │               └── hashbrown v0.15.2 (*)
+│   │   │       │   │   ├── solana-zk-sdk feature "default"
+│   │   │       │   │   │   └── solana-zk-sdk v2.3.13
+│   │   │       │   │   │       ├── merlin v3.0.0
+│   │   │       │   │   │       │   ├── byteorder v1.5.0
+│   │   │       │   │   │       │   ├── keccak v0.1.5 (*)
+│   │   │       │   │   │       │   ├── rand_core v0.6.4 (*)
+│   │   │       │   │   │       │   └── zeroize feature "zeroize_derive"
+│   │   │       │   │   │       │       └── zeroize v1.8.2 (*)
+│   │   │       │   │   │       ├── solana-signature v2.3.0
+│   │   │       │   │   │       │   ├── five8 feature "default" (*)
+│   │   │       │   │   │       │   └── solana-sanitize feature "default" (*)
+│   │   │       │   │   │       ├── serde feature "default" (*)
+│   │   │       │   │   │       ├── serde_derive feature "default" (*)
+│   │   │       │   │   │       ├── serde_json feature "default" (*)
+│   │   │       │   │   │       ├── bincode feature "default" (*)
+│   │   │       │   │   │       ├── bytemuck feature "default" (*)
+│   │   │       │   │   │       ├── bytemuck_derive feature "default" (*)
+│   │   │       │   │   │       ├── subtle feature "default"
+│   │   │       │   │   │       │   ├── subtle v2.6.1
+│   │   │       │   │   │       │   ├── subtle feature "i128"
+│   │   │       │   │   │       │   │   └── subtle v2.6.1
+│   │   │       │   │   │       │   └── subtle feature "std" (*)
+│   │   │       │   │   │       ├── num-traits feature "default" (*)
+│   │   │       │   │   │       ├── num-derive feature "default" (*)
+│   │   │       │   │   │       ├── rand feature "default" (*)
+│   │   │       │   │   │       ├── solana-instruction feature "default" (*)
+│   │   │       │   │   │       ├── solana-instruction feature "std" (*)
+│   │   │       │   │   │       ├── solana-pubkey feature "bytemuck" (*)
+│   │   │       │   │   │       ├── curve25519-dalek feature "default" (*)
+│   │   │       │   │   │       ├── curve25519-dalek feature "digest" (*)
+│   │   │       │   │   │       ├── curve25519-dalek feature "rand_core" (*)
+│   │   │       │   │   │       ├── curve25519-dalek feature "serde"
+│   │   │       │   │   │       │   └── curve25519-dalek v4.1.3 (*)
+│   │   │       │   │   │       ├── zeroize feature "zeroize_derive" (*)
+│   │   │       │   │   │       ├── solana-sdk-ids feature "default" (*)
+│   │   │       │   │   │       ├── sha3 feature "default" (*)
+│   │   │       │   │   │       ├── thiserror feature "default" (*)
+│   │   │       │   │   │       ├── base64 feature "default" (*)
+│   │   │       │   │   │       ├── aes-gcm-siv feature "default"
+│   │   │       │   │   │       │   ├── aes-gcm-siv v0.11.1
+│   │   │       │   │   │       │   │   ├── aead v0.5.2
+│   │   │       │   │   │       │   │   │   ├── generic-array v0.14.7 (*)
+│   │   │       │   │   │       │   │   │   └── crypto-common feature "default" (*)
+│   │   │       │   │   │       │   │   ├── polyval v0.6.2
+│   │   │       │   │   │       │   │   │   ├── universal-hash v0.5.1
+│   │   │       │   │   │       │   │   │   │   ├── subtle v2.6.1
+│   │   │       │   │   │       │   │   │   │   └── crypto-common feature "default" (*)
+│   │   │       │   │   │       │   │   │   ├── cfg-if feature "default" (*)
+│   │   │       │   │   │       │   │   │   ├── cpufeatures feature "default" (*)
+│   │   │       │   │   │       │   │   │   └── opaque-debug feature "default" (*)
+│   │   │       │   │   │       │   │   ├── subtle v2.6.1
+│   │   │       │   │   │       │   │   ├── zeroize v1.8.2 (*)
+│   │   │       │   │   │       │   │   ├── aes feature "default"
+│   │   │       │   │   │       │   │   │   └── aes v0.8.4
+│   │   │       │   │   │       │   │   │       ├── cfg-if feature "default" (*)
+│   │   │       │   │   │       │   │   │       ├── cpufeatures feature "default" (*)
+│   │   │       │   │   │       │   │   │       └── cipher feature "default"
+│   │   │       │   │   │       │   │   │           └── cipher v0.4.4
+│   │   │       │   │   │       │   │   │               ├── crypto-common feature "default" (*)
+│   │   │       │   │   │       │   │   │               └── inout feature "default"
+│   │   │       │   │   │       │   │   │                   └── inout v0.1.4
+│   │   │       │   │   │       │   │   │                       └── generic-array feature "default" (*)
+│   │   │       │   │   │       │   │   ├── cipher feature "default" (*)
+│   │   │       │   │   │       │   │   └── ctr feature "default"
+│   │   │       │   │   │       │   │       └── ctr v0.9.2
+│   │   │       │   │   │       │   │           └── cipher feature "default" (*)
+│   │   │       │   │   │       │   ├── aes-gcm-siv feature "aes"
+│   │   │       │   │   │       │   │   └── aes-gcm-siv v0.11.1 (*)
+│   │   │       │   │   │       │   ├── aes-gcm-siv feature "alloc"
+│   │   │       │   │   │       │   │   ├── aes-gcm-siv v0.11.1 (*)
+│   │   │       │   │   │       │   │   └── aead feature "alloc"
+│   │   │       │   │   │       │   │       └── aead v0.5.2 (*)
+│   │   │       │   │   │       │   └── aes-gcm-siv feature "getrandom"
+│   │   │       │   │   │       │       ├── aes-gcm-siv v0.11.1 (*)
+│   │   │       │   │   │       │       └── aead feature "getrandom"
+│   │   │       │   │   │       │           ├── aead v0.5.2 (*)
+│   │   │       │   │   │       │           ├── crypto-common feature "getrandom"
+│   │   │       │   │   │       │           │   ├── crypto-common v0.1.7 (*)
+│   │   │       │   │   │       │           │   ├── crypto-common feature "rand_core"
+│   │   │       │   │   │       │           │   │   └── crypto-common v0.1.7 (*)
+│   │   │       │   │   │       │           │   └── rand_core feature "getrandom" (*)
+│   │   │       │   │   │       │           └── aead feature "rand_core"
+│   │   │       │   │   │       │               ├── aead v0.5.2 (*)
+│   │   │       │   │   │       │               └── crypto-common feature "rand_core" (*)
+│   │   │       │   │   │       ├── itertools feature "default"
+│   │   │       │   │   │       │   ├── itertools v0.12.1
+│   │   │       │   │   │       │   │   └── either v1.15.0
+│   │   │       │   │   │       │   └── itertools feature "use_std"
+│   │   │       │   │   │       │       ├── itertools v0.12.1 (*)
+│   │   │       │   │   │       │       ├── itertools feature "use_alloc"
+│   │   │       │   │   │       │       │   └── itertools v0.12.1 (*)
+│   │   │       │   │   │       │       └── either feature "use_std"
+│   │   │       │   │   │       │           ├── either v1.15.0
+│   │   │       │   │   │       │           └── either feature "std"
+│   │   │       │   │   │       │               └── either v1.15.0
+│   │   │       │   │   │       ├── solana-derivation-path feature "default"
+│   │   │       │   │   │       │   └── solana-derivation-path v2.2.1
+│   │   │       │   │   │       │       ├── derivation-path v0.2.0
+│   │   │       │   │   │       │       ├── qstring feature "default"
+│   │   │       │   │   │       │       │   └── qstring v0.7.2
+│   │   │       │   │   │       │       │       └── percent-encoding feature "default"
+│   │   │       │   │   │       │       │           ├── percent-encoding v2.3.2
+│   │   │       │   │   │       │       │           └── percent-encoding feature "std"
+│   │   │       │   │   │       │       │               ├── percent-encoding v2.3.2
+│   │   │       │   │   │       │       │               └── percent-encoding feature "alloc"
+│   │   │       │   │   │       │       │                   └── percent-encoding v2.3.2
+│   │   │       │   │   │       │       └── uriparse feature "default"
+│   │   │       │   │   │       │           └── uriparse v0.6.4
+│   │   │       │   │   │       │               ├── lazy_static feature "default" (*)
+│   │   │       │   │   │       │               └── fnv feature "default"
+│   │   │       │   │   │       │                   ├── fnv v1.0.7
+│   │   │       │   │   │       │                   └── fnv feature "std"
+│   │   │       │   │   │       │                       └── fnv v1.0.7
+│   │   │       │   │   │       ├── solana-seed-derivable feature "default"
+│   │   │       │   │   │       │   └── solana-seed-derivable v2.2.1
+│   │   │       │   │   │       │       └── solana-derivation-path feature "default" (*)
+│   │   │       │   │   │       ├── solana-seed-phrase feature "default"
+│   │   │       │   │   │       │   └── solana-seed-phrase v2.2.1
+│   │   │       │   │   │       │       ├── pbkdf2 v0.11.0
+│   │   │       │   │   │       │       │   ├── digest feature "default" (*)
+│   │   │       │   │   │       │       │   └── digest feature "mac" (*)
+│   │   │       │   │   │       │       ├── sha2 feature "default" (*)
+│   │   │       │   │   │       │       └── hmac feature "default"
+│   │   │       │   │   │       │           └── hmac v0.12.1
+│   │   │       │   │   │       │               ├── digest feature "default" (*)
+│   │   │       │   │   │       │               └── digest feature "mac" (*)
+│   │   │       │   │   │       └── solana-signer feature "default"
+│   │   │       │   │   │           └── solana-signer v2.2.1
+│   │   │       │   │   │               ├── solana-pubkey v2.4.0 (*)
+│   │   │       │   │   │               ├── solana-signature v2.3.0 (*)
+│   │   │       │   │   │               └── solana-transaction-error feature "default" (*)
+│   │   │       │   │   ├── spl-elgamal-registry feature "default"
+│   │   │       │   │   │   └── spl-elgamal-registry v0.1.1
+│   │   │       │   │   │       ├── bytemuck feature "default" (*)
+│   │   │       │   │   │       ├── bytemuck feature "derive" (*)
+│   │   │       │   │   │       ├── solana-program feature "default" (*)
+│   │   │       │   │   │       ├── solana-zk-sdk feature "default" (*)
+│   │   │       │   │   │       ├── spl-pod feature "default"
+│   │   │       │   │   │       │   └── spl-pod v0.5.1
+│   │   │       │   │   │       │       ├── bytemuck feature "default" (*)
+│   │   │       │   │   │       │       ├── bytemuck_derive feature "default" (*)
+│   │   │       │   │   │       │       ├── borsh feature "default" (*)
+│   │   │       │   │   │       │       ├── borsh feature "derive" (*)
+│   │   │       │   │   │       │       ├── borsh feature "unstable__schema" (*)
+│   │   │       │   │   │       │       ├── num-traits feature "default" (*)
+│   │   │       │   │   │       │       ├── num-derive feature "default" (*)
+│   │   │       │   │   │       │       ├── solana-program-error feature "default" (*)
+│   │   │       │   │   │       │       ├── solana-decode-error feature "default" (*)
+│   │   │       │   │   │       │       ├── solana-pubkey feature "default" (*)
+│   │   │       │   │   │       │       ├── solana-msg feature "default" (*)
+│   │   │       │   │   │       │       ├── thiserror feature "default" (*)
+│   │   │       │   │   │       │       ├── solana-program-option feature "default" (*)
+│   │   │       │   │   │       │       └── solana-zk-sdk feature "default" (*)
+│   │   │       │   │   │       └── spl-token-confidential-transfer-proof-extraction feature "default"
+│   │   │       │   │   │           └── spl-token-confidential-transfer-proof-extraction v0.2.1
+│   │   │       │   │   │               ├── bytemuck feature "default" (*)
+│   │   │       │   │   │               ├── solana-program feature "default" (*)
+│   │   │       │   │   │               ├── thiserror feature "default" (*)
+│   │   │       │   │   │               ├── solana-zk-sdk feature "default" (*)
+│   │   │       │   │   │               ├── spl-pod feature "default" (*)
+│   │   │       │   │   │               └── solana-curve25519 feature "default"
+│   │   │       │   │   │                   └── solana-curve25519 v2.3.13
+│   │   │       │   │   │                       ├── bytemuck feature "default" (*)
+│   │   │       │   │   │                       ├── bytemuck_derive feature "default" (*)
+│   │   │       │   │   │                       ├── subtle feature "default" (*)
+│   │   │       │   │   │                       ├── curve25519-dalek feature "default" (*)
+│   │   │       │   │   │                       ├── curve25519-dalek feature "digest" (*)
+│   │   │       │   │   │                       ├── curve25519-dalek feature "rand_core" (*)
+│   │   │       │   │   │                       ├── curve25519-dalek feature "serde" (*)
+│   │   │       │   │   │                       └── thiserror feature "default" (*)
+│   │   │       │   │   ├── spl-elgamal-registry feature "no-entrypoint"
+│   │   │       │   │   │   └── spl-elgamal-registry v0.1.1 (*)
+│   │   │       │   │   ├── spl-pod feature "default" (*)
+│   │   │       │   │   ├── spl-token-confidential-transfer-proof-extraction feature "default" (*)
+│   │   │       │   │   ├── spl-memo feature "default"
+│   │   │       │   │   │   └── spl-memo v6.0.0
+│   │   │       │   │   │       ├── solana-account-info feature "default" (*)
+│   │   │       │   │   │       ├── solana-program-error feature "default" (*)
+│   │   │       │   │   │       ├── solana-instruction feature "default" (*)
+│   │   │       │   │   │       ├── solana-pubkey feature "default" (*)
+│   │   │       │   │   │       ├── solana-msg feature "default" (*)
+│   │   │       │   │   │       └── solana-program-entrypoint feature "default" (*)
+│   │   │       │   │   ├── spl-memo feature "no-entrypoint"
+│   │   │       │   │   │   └── spl-memo v6.0.0 (*)
+│   │   │       │   │   ├── spl-token-confidential-transfer-ciphertext-arithmetic feature "default"
+│   │   │       │   │   │   └── spl-token-confidential-transfer-ciphertext-arithmetic v0.2.1
+│   │   │       │   │   │       ├── bytemuck feature "default" (*)
+│   │   │       │   │   │       ├── base64 feature "default" (*)
+│   │   │       │   │   │       ├── solana-zk-sdk feature "default" (*)
+│   │   │       │   │   │       └── solana-curve25519 feature "default" (*)
+│   │   │       │   │   ├── spl-token-confidential-transfer-proof-generation feature "default"
+│   │   │       │   │   │   └── spl-token-confidential-transfer-proof-generation v0.2.0
+│   │   │       │   │   │       ├── thiserror feature "default" (*)
+│   │   │       │   │   │       ├── curve25519-dalek feature "default" (*)
+│   │   │       │   │   │       └── solana-zk-sdk feature "default" (*)
+│   │   │       │   │   ├── spl-token-group-interface feature "default"
+│   │   │       │   │   │   └── spl-token-group-interface v0.5.0
+│   │   │       │   │   │       ├── thiserror feature "default" (*)
+│   │   │       │   │   │       ├── bytemuck feature "default" (*)
+│   │   │       │   │   │       ├── num-traits feature "default" (*)
+│   │   │       │   │   │       ├── num-derive feature "default" (*)
+│   │   │       │   │   │       ├── solana-program-error feature "default" (*)
+│   │   │       │   │   │       ├── solana-decode-error feature "default" (*)
+│   │   │       │   │   │       ├── solana-instruction feature "default" (*)
+│   │   │       │   │   │       ├── solana-pubkey feature "default" (*)
+│   │   │       │   │   │       ├── solana-msg feature "default" (*)
+│   │   │       │   │   │       ├── spl-pod feature "borsh"
+│   │   │       │   │   │       │   ├── spl-pod v0.5.1 (*)
+│   │   │       │   │   │       │   └── solana-pubkey feature "borsh" (*)
+│   │   │       │   │   │       ├── spl-pod feature "default" (*)
+│   │   │       │   │   │       └── spl-discriminator feature "default"
+│   │   │       │   │   │           └── spl-discriminator v0.4.1
+│   │   │       │   │   │               ├── bytemuck feature "default" (*)
+│   │   │       │   │   │               ├── bytemuck feature "derive" (*)
+│   │   │       │   │   │               ├── solana-program-error feature "default" (*)
+│   │   │       │   │   │               ├── solana-sha256-hasher feature "default" (*)
+│   │   │       │   │   │               └── spl-discriminator-derive feature "default"
+│   │   │       │   │   │                   └── spl-discriminator-derive v0.2.0 (proc-macro)
+│   │   │       │   │   │                       ├── quote feature "default" (*)
+│   │   │       │   │   │                       ├── syn feature "default" (*)
+│   │   │       │   │   │                       ├── syn feature "full" (*)
+│   │   │       │   │   │                       └── spl-discriminator-syn feature "default"
+│   │   │       │   │   │                           └── spl-discriminator-syn v0.2.1
+│   │   │       │   │   │                               ├── proc-macro2 feature "default" (*)
+│   │   │       │   │   │                               ├── quote feature "default" (*)
+│   │   │       │   │   │                               ├── syn feature "default" (*)
+│   │   │       │   │   │                               ├── syn feature "full" (*)
+│   │   │       │   │   │                               ├── sha2 feature "default" (*)
+│   │   │       │   │   │                               └── thiserror feature "default" (*)
+│   │   │       │   │   ├── spl-token-metadata-interface feature "default"
+│   │   │       │   │   │   └── spl-token-metadata-interface v0.6.0
+│   │   │       │   │   │       ├── thiserror feature "default" (*)
+│   │   │       │   │   │       ├── borsh feature "default" (*)
+│   │   │       │   │   │       ├── num-traits feature "default" (*)
+│   │   │       │   │   │       ├── num-derive feature "default" (*)
+│   │   │       │   │   │       ├── solana-program-error feature "default" (*)
+│   │   │       │   │   │       ├── solana-decode-error feature "default" (*)
+│   │   │       │   │   │       ├── solana-instruction feature "default" (*)
+│   │   │       │   │   │       ├── solana-pubkey feature "default" (*)
+│   │   │       │   │   │       ├── solana-msg feature "default" (*)
+│   │   │       │   │   │       ├── solana-borsh feature "default" (*)
+│   │   │       │   │   │       ├── spl-pod feature "borsh" (*)
+│   │   │       │   │   │       ├── spl-pod feature "default" (*)
+│   │   │       │   │   │       ├── spl-discriminator feature "default" (*)
+│   │   │       │   │   │       └── spl-type-length-value feature "default"
+│   │   │       │   │   │           └── spl-type-length-value v0.7.0
+│   │   │       │   │   │               ├── thiserror feature "default" (*)
+│   │   │       │   │   │               ├── bytemuck feature "default" (*)
+│   │   │       │   │   │               ├── bytemuck feature "derive" (*)
+│   │   │       │   │   │               ├── num-traits feature "default" (*)
+│   │   │       │   │   │               ├── num-derive feature "default" (*)
+│   │   │       │   │   │               ├── solana-account-info feature "default" (*)
+│   │   │       │   │   │               ├── solana-program-error feature "default" (*)
+│   │   │       │   │   │               ├── solana-decode-error feature "default" (*)
+│   │   │       │   │   │               ├── solana-msg feature "default" (*)
+│   │   │       │   │   │               ├── spl-pod feature "default" (*)
+│   │   │       │   │   │               └── spl-discriminator feature "default" (*)
+│   │   │       │   │   ├── spl-type-length-value feature "default" (*)
+│   │   │       │   │   └── spl-transfer-hook-interface feature "default"
+│   │   │       │   │       └── spl-transfer-hook-interface v0.9.0
+│   │   │       │   │           ├── thiserror feature "default" (*)
+│   │   │       │   │           ├── bytemuck feature "default" (*)
+│   │   │       │   │           ├── bytemuck feature "derive" (*)
+│   │   │       │   │           ├── arrayref feature "default" (*)
+│   │   │       │   │           ├── num-traits feature "default" (*)
+│   │   │       │   │           ├── num-derive feature "default" (*)
+│   │   │       │   │           ├── solana-account-info feature "default" (*)
+│   │   │       │   │           ├── solana-program-error feature "default" (*)
+│   │   │       │   │           ├── solana-decode-error feature "default" (*)
+│   │   │       │   │           ├── solana-instruction feature "default" (*)
+│   │   │       │   │           ├── solana-instruction feature "std" (*)
+│   │   │       │   │           ├── solana-pubkey feature "curve25519" (*)
+│   │   │       │   │           ├── solana-pubkey feature "default" (*)
+│   │   │       │   │           ├── solana-msg feature "default" (*)
+│   │   │       │   │           ├── solana-cpi feature "default" (*)
+│   │   │       │   │           ├── spl-pod feature "default" (*)
+│   │   │       │   │           ├── spl-discriminator feature "default" (*)
+│   │   │       │   │           ├── spl-type-length-value feature "default" (*)
+│   │   │       │   │           ├── spl-program-error feature "default"
+│   │   │       │   │           │   └── spl-program-error v0.6.0
+│   │   │       │   │           │       ├── thiserror feature "default" (*)
+│   │   │       │   │           │       ├── solana-program feature "default" (*)
+│   │   │       │   │           │       ├── num-traits feature "default" (*)
+│   │   │       │   │           │       ├── num-derive feature "default" (*)
+│   │   │       │   │           │       └── spl-program-error-derive feature "default"
+│   │   │       │   │           │           └── spl-program-error-derive v0.4.1 (proc-macro)
+│   │   │       │   │           │               ├── proc-macro2 feature "default" (*)
+│   │   │       │   │           │               ├── quote feature "default" (*)
+│   │   │       │   │           │               ├── syn feature "default" (*)
+│   │   │       │   │           │               ├── syn feature "full" (*)
+│   │   │       │   │           │               └── sha2 feature "default" (*)
+│   │   │       │   │           └── spl-tlv-account-resolution feature "default"
+│   │   │       │   │               └── spl-tlv-account-resolution v0.9.0
+│   │   │       │   │                   ├── thiserror feature "default" (*)
+│   │   │       │   │                   ├── bytemuck feature "default" (*)
+│   │   │       │   │                   ├── bytemuck feature "derive" (*)
+│   │   │       │   │                   ├── num-traits feature "default" (*)
+│   │   │       │   │                   ├── num-derive feature "default" (*)
+│   │   │       │   │                   ├── solana-account-info feature "default" (*)
+│   │   │       │   │                   ├── solana-program-error feature "default" (*)
+│   │   │       │   │                   ├── solana-decode-error feature "default" (*)
+│   │   │       │   │                   ├── solana-instruction feature "default" (*)
+│   │   │       │   │                   ├── solana-instruction feature "std" (*)
+│   │   │       │   │                   ├── solana-pubkey feature "default" (*)
+│   │   │       │   │                   ├── solana-msg feature "default" (*)
+│   │   │       │   │                   ├── spl-pod feature "default" (*)
+│   │   │       │   │                   ├── spl-discriminator feature "default" (*)
+│   │   │       │   │                   ├── spl-type-length-value feature "default" (*)
+│   │   │       │   │                   └── spl-program-error feature "default" (*)
+│   │   │       │   └── spl-token-2022 feature "zk-ops"
+│   │   │       │       └── spl-token-2022 v6.0.0 (*)
+│   │   │       └── spl-token-2022 feature "no-entrypoint"
+│   │   │           └── spl-token-2022 v6.0.0 (*)
+│   │   ├── spl-associated-token-account feature "no-entrypoint"
+│   │   │   └── spl-associated-token-account v6.0.0 (*)
+│   │   ├── spl-token feature "default" (*)
+│   │   ├── spl-token feature "no-entrypoint" (*)
+│   │   ├── spl-token-2022 feature "default" (*)
+│   │   ├── spl-token-2022 feature "no-entrypoint" (*)
+│   │   ├── spl-pod feature "default" (*)
+│   │   ├── spl-token-group-interface feature "default" (*)
+│   │   └── spl-token-metadata-interface feature "default" (*)
+│   ├── anchor-spl feature "associated_token"
+│   │   ├── anchor-spl v0.31.1 (*)
+│   │   └── anchor-spl feature "spl-associated-token-account"
+│   │       └── anchor-spl v0.31.1 (*)
+│   ├── anchor-spl feature "mint"
+│   │   └── anchor-spl v0.31.1 (*)
+│   ├── anchor-spl feature "token"
+│   │   ├── anchor-spl v0.31.1 (*)
+│   │   └── anchor-spl feature "spl-token"
+│   │       └── anchor-spl v0.31.1 (*)
+│   ├── anchor-spl feature "token_2022"
+│   │   ├── anchor-spl v0.31.1 (*)
+│   │   └── anchor-spl feature "spl-token-2022"
+│   │       └── anchor-spl v0.31.1 (*)
+│   └── anchor-spl feature "token_2022_extensions"
+│       ├── anchor-spl v0.31.1 (*)
+│       ├── anchor-spl feature "spl-pod"
+│       │   └── anchor-spl v0.31.1 (*)
+│       ├── anchor-spl feature "spl-token-2022" (*)
+│       ├── anchor-spl feature "spl-token-group-interface"
+│       │   └── anchor-spl v0.31.1 (*)
+│       └── anchor-spl feature "spl-token-metadata-interface"
+│           └── anchor-spl v0.31.1 (*)
+└── anchor-syn feature "default"
+    └── anchor-syn v0.31.1
+        ├── anyhow feature "default" (*)
+        ├── serde feature "default" (*)
+        ├── serde feature "derive" (*)
+        ├── proc-macro2 feature "default" (*)
+        ├── proc-macro2 feature "span-locations" (*)
+        ├── quote feature "default" (*)
+        ├── heck feature "default" (*)
+        ├── serde_json feature "default" (*)
+        ├── sha2 feature "default" (*)
+        ├── bs58 feature "default" (*)
+        ├── thiserror feature "default" (*)
+        ├── syn feature "default"
+        │   ├── syn v1.0.109
+        │   │   ├── proc-macro2 v1.0.105 (*)
+        │   │   ├── quote v1.0.43 (*)
+        │   │   └── unicode-ident feature "default" (*)
+        │   ├── syn feature "clone-impls"
+        │   │   └── syn v1.0.109 (*)
+        │   ├── syn feature "derive"
+        │   │   └── syn v1.0.109 (*)
+        │   ├── syn feature "parsing"
+        │   │   └── syn v1.0.109 (*)
+        │   ├── syn feature "printing"
+        │   │   ├── syn v1.0.109 (*)
+        │   │   └── syn feature "quote"
+        │   │       └── syn v1.0.109 (*)
+        │   └── syn feature "proc-macro"
+        │       ├── syn v1.0.109 (*)
+        │       ├── proc-macro2 feature "proc-macro" (*)
+        │       ├── quote feature "proc-macro" (*)
+        │       └── syn feature "quote" (*)
+        ├── syn feature "extra-traits"
+        │   └── syn v1.0.109 (*)
+        ├── syn feature "full"
+        │   └── syn v1.0.109 (*)
+        └── syn feature "parsing" (*)
+
+liquidity-pool v0.1.0 (/Users/henryfudge/Desktop/256m-protocol/programs/liquidity_pool)
+├── anchor-attribute-program feature "default" (*)
+├── anchor-derive-accounts feature "default" (*)
+├── anchor-derive-serde feature "default" (*)
+├── anchor-derive-space feature "default" (*)
+├── anchor-lang feature "default" (*)
+├── solana-program feature "default" (*)
+├── anchor-spl feature "default" (*)
+└── anchor-syn feature "default" (*)
+
+policy-manager v0.1.0 (/Users/henryfudge/Desktop/256m-protocol/programs/policy_manager)
+├── anchor-attribute-program feature "default" (*)
+├── anchor-derive-accounts feature "default" (*)
+├── anchor-derive-serde feature "default" (*)
+├── anchor-derive-space feature "default" (*)
+├── anchor-lang feature "default" (*)
+├── solana-program feature "default" (*)
+├── anchor-spl feature "default" (*)
+└── anchor-syn feature "default" (*)
+
+treasury v0.1.0 (/Users/henryfudge/Desktop/256m-protocol/programs/treasury)
+├── anchor-attribute-program feature "default" (*)
+├── anchor-derive-accounts feature "default" (*)
+├── anchor-derive-serde feature "default" (*)
+├── anchor-derive-space feature "default" (*)
+├── anchor-lang feature "default" (*)
+├── solana-program feature "default" (*)
+├── anchor-spl feature "default" (*)
+└── anchor-syn feature "default" (*)

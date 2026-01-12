@@ -1,0 +1,105 @@
+ # Solana
+ target/
+ test-ledger/
+ .anchor/
+ .DS_Store
+
+ # Node
+ node_modules/
+ *.log
+ yarn-error.log
+
+ # Environment
+ .env
+ .env.local
+
+ # Deployment artifacts
+ deployment-info.json
+ devnet-deployment.json
+ test-customer.json
+ *.pid
+ validator.log
+ core-test.log
+ stress-test.log
+ test-report.txt
+
+ # IDE
+ .vscode/
+ .idea/
+ *.swp
+ *.swo
+
+ # Keys (NEVER commit private keys!)
+ *.json
+ !package.json
+ !tsconfig.json
+ !Anchor.toml
+ !programs/**/Cargo.toml
+ !.github/**/*.json
+
+ # Build artifacts
+ *.so
+ *.wasm
+# macOS
+.DS_Store
+
+# Node
+node_modules/
+
+# Python
+__pycache__/
+*.pyc
+
+# Build
+dist/
+build/
+
+# Editor
+.vscode/
+
+# Solana
+target/
+test-ledger/
+.anchor/
+.DS_Store
+
+# Node
+node_modules/
+*.log
+yarn-error.log
+
+# Environment
+.env
+.env.local
+
+# Deployment artifacts
+deployment-info.json
+devnet-deployment.json
+test-customer.json
+*.pid
+validator.log
+core-test.log
+stress-test.log
+test-report.txt
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Keys (NEVER commit private keys!)
+*.json
+!package.json
+!tsconfig.json
+!Anchor.toml
+!programs/**/Cargo.toml
+!.github/**/*.json
+
+# Build artifacts
+*.so
+*.wasm
+ 
+# Logs
+*.log
+logs/
