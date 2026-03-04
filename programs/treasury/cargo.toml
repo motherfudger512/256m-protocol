@@ -14,14 +14,8 @@ no-idl = []
 no-log-ix-name = []
 cpi = ["no-entrypoint"]
 default = []
+idl-build = ["anchor-lang/idl-build", "anchor-spl/idl-build"]
 
 [dependencies]
 anchor-lang = "0.31.0"
 anchor-spl = "0.31.0"
-# Explicit pins to ensure consistent proc-macro / solana versions
-solana-program = "2.1.0"
-anchor-attribute-program = "0.31.0"
-anchor-derive-accounts = "0.31.0"
-anchor-derive-serde = "0.31.0"
-anchor-derive-space = "0.31.0"
-anchor-syn = "0.31.0"

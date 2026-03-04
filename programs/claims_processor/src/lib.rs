@@ -1,7 +1,7 @@
 use anchor_lang::prelude::*;
-use anchor_spl::token::{self, Token, TokenAccount};
+use anchor_lang::solana_program::instruction::AccountMeta;
 
-declare_id!("C1aims111111111111111111111111111111111111111");
+declare_id!("7fHLi8GsPqT4dbEjezKc4KaxWQ34kNv4vi8rwDwWxL4g");
 
 #[program]
 pub mod claims_processor {
@@ -11,11 +11,13 @@ pub mod claims_processor {
         ctx: Context<InitializeClaimsSystem>,
         max_auto_payout: u64,
         daily_auto_payout_limit: u64,
+        ai_oracle: Pubkey,
     ) -> Result<()> {
         let claims_state = &mut ctx.accounts.claims_state;
         claims_state.authority = ctx.accounts.authority.key();
         claims_state.policy_manager = ctx.accounts.policy_manager.key();
         claims_state.liquidity_pool = ctx.accounts.liquidity_pool.key();
+        claims_state.ai_oracle = ai_oracle;
         claims_state.total_claims = 0;
         claims_state.approved_claims = 0;
         claims_state.rejected_claims = 0;
@@ -45,9 +47,14 @@ pub mod claims_processor {
     ) -> Result<()> {
         require!(claimed_amount > 0, ErrorCode::InvalidAmount);
 
-        let policy = &ctx.accounts.policy;
         let claims_state = &mut ctx.accounts.claims_state;
         let claim = &mut ctx.accounts.claim;
+
+        // Deserialize policy from cross-program account
+        let policy = deserialize_policy(
+            &ctx.accounts.policy,
+            &claims_state.policy_manager,
+        )?;
 
         require!(
             policy.status == PolicyStatus::Active,
@@ -123,6 +130,10 @@ pub mod claims_processor {
         decision: AIDecision,
         confidence: u8,
     ) -> Result<()> {
+        require!(
+            ctx.accounts.ai_oracle.key() == ctx.accounts.claims_state.ai_oracle,
+            ErrorCode::UnauthorizedOracle
+        );
         require!(confidence <= 100, ErrorCode::InvalidConfidence);
 
         let claim = &mut ctx.accounts.claim;
@@ -211,56 +222,118 @@ pub mod claims_processor {
             ErrorCode::Unauthorized
         );
 
+        // Phase 1: Validation and daily limit management
+        {
+            let claims_state = &mut ctx.accounts.claims_state;
+            let claim = &ctx.accounts.claim;
+
+            require!(
+                claim.status == ClaimStatus::Approved,
+                ErrorCode::ClaimNotApproved
+            );
+            require!(
+                claim.payout_tx.is_none(),
+                ErrorCode::ClaimAlreadyPaid
+            );
+
+            let current_day = Clock::get()?.unix_timestamp / 86400;
+            if current_day > claims_state.last_reset_day {
+                claims_state.daily_auto_paid = 0;
+                claims_state.last_reset_day = current_day;
+            }
+
+            require!(
+                claim.claim_amount <= claims_state.max_auto_payout,
+                ErrorCode::ExceedsMaxAutoPayout
+            );
+            require!(
+                claims_state.daily_auto_paid.checked_add(claim.claim_amount)
+                    .ok_or(ErrorCode::Overflow)? <= claims_state.daily_auto_payout_limit,
+                ErrorCode::DailyPayoutLimitReached
+            );
+        }
+        // Mutable borrow dropped — needed for CPI which borrows account infos
+
+        // Phase 2: CPI to liquidity_pool::execute_payout
+        let payout_amount = ctx.accounts.claim.claim_amount;
+        let bump = ctx.accounts.claims_state.bump;
+
+        // Build instruction data: [discriminator(8)] [amount(8)] [asset_type(1)]
+        let disc = anchor_lang::solana_program::hash::hash(b"global:execute_payout");
+        let mut ix_data = Vec::with_capacity(17);
+        ix_data.extend_from_slice(&disc.to_bytes()[..8]);
+        ix_data.extend_from_slice(&payout_amount.to_le_bytes());
+        let asset_type_byte: u8 = match asset_type {
+            AssetType::USDC => 0,
+            AssetType::SOL => 1,
+        };
+        ix_data.push(asset_type_byte);
+
+        let account_metas = vec![
+            AccountMeta::new(ctx.accounts.pool_state.key(), false),
+            AccountMeta::new(ctx.accounts.pool_vault_usdc.key(), false),
+            AccountMeta::new(ctx.accounts.pool_vault_sol.key(), false),
+            AccountMeta::new(ctx.accounts.claimant_token_account.key(), false),
+            AccountMeta::new(ctx.accounts.claimant.key(), false),
+            AccountMeta::new_readonly(ctx.accounts.claims_state.key(), true),
+            AccountMeta::new_readonly(ctx.accounts.token_program.key(), false),
+        ];
+
+        let ix = anchor_lang::solana_program::instruction::Instruction {
+            program_id: ctx.accounts.liquidity_pool_program.key(),
+            accounts: account_metas,
+            data: ix_data,
+        };
+
+        let seeds = &[b"claims_state".as_ref(), &[bump]];
+        let signer_seeds = &[&seeds[..]];
+
+        anchor_lang::solana_program::program::invoke_signed(
+            &ix,
+            &[
+                ctx.accounts.pool_state.to_account_info(),
+                ctx.accounts.pool_vault_usdc.to_account_info(),
+                ctx.accounts.pool_vault_sol.to_account_info(),
+                ctx.accounts.claimant_token_account.to_account_info(),
+                ctx.accounts.claimant.to_account_info(),
+                ctx.accounts.claims_state.to_account_info(),
+                ctx.accounts.token_program.to_account_info(),
+            ],
+            signer_seeds,
+        )?;
+
+        // Phase 3: Update local state after successful CPI
+        let policy = deserialize_policy(
+            &ctx.accounts.policy,
+            &ctx.accounts.claims_state.policy_manager,
+        )?;
+
         let claim = &mut ctx.accounts.claim;
         let claims_state = &mut ctx.accounts.claims_state;
 
-        require!(
-            claim.status == ClaimStatus::Approved,
-            ErrorCode::ClaimNotApproved
-        );
-
-        require!(
-            claim.payout_tx.is_none(),
-            ErrorCode::ClaimAlreadyPaid
-        );
-
-        let current_day = Clock::get()?.unix_timestamp / 86400;
-        if current_day > claims_state.last_reset_day {
-            claims_state.daily_auto_paid = 0;
-            claims_state.last_reset_day = current_day;
-        }
-
-        if claim.claim_amount > claims_state.max_auto_payout {
-            msg!("⚠ Large claim requiring multisig approval");
-        }
-
-        if claims_state.daily_auto_paid + claim.claim_amount > claims_state.daily_auto_payout_limit {
-            msg!("⚠ Daily limit reached, requiring manual approval");
-        }
-
         claim.status = ClaimStatus::Paid;
-        claim.payout_tx = Some([0u8; 64]);
+        claim.payout_tx = Some([1u8; 64]); // TODO: store actual tx signature
 
         claims_state.approved_claims = claims_state.approved_claims
             .checked_add(1)
             .ok_or(ErrorCode::Overflow)?;
         claims_state.total_paid_out = claims_state.total_paid_out
-            .checked_add(claim.claim_amount)
+            .checked_add(payout_amount)
             .ok_or(ErrorCode::Overflow)?;
         claims_state.daily_auto_paid = claims_state.daily_auto_paid
-            .checked_add(claim.claim_amount)
+            .checked_add(payout_amount)
             .ok_or(ErrorCode::Overflow)?;
 
         emit!(ClaimPaidEvent {
             claim_id: claim.claim_id,
-            policy_id: ctx.accounts.policy.policy_id,
+            policy_id: policy.policy_id,
             customer: claim.customer,
-            amount: claim.claim_amount,
+            amount: payout_amount,
             asset_type,
             timestamp: Clock::get()?.unix_timestamp,
         });
 
-        msg!("Claim {} paid: {} {:?}", claim.claim_id, claim.claim_amount, asset_type);
+        msg!("Claim {} paid: {} {:?}", claim.claim_id, payout_amount, asset_type);
         Ok(())
     }
 
@@ -357,9 +430,8 @@ pub struct SubmitClaim<'info> {
     )]
     pub claims_state: Account<'info, ClaimsState>,
 
-    /// CHECK: Policy account from policy-manager program
-    #[account(mut)]
-    pub policy: Account<'info, Policy>,
+    /// CHECK: Policy account from policy-manager program, validated in handler
+    pub policy: AccountInfo<'info>,
 
     #[account(
         init,
@@ -383,6 +455,12 @@ pub struct SubmitClaim<'info> {
 #[derive(Accounts)]
 pub struct AIReviewClaim<'info> {
     #[account(
+        seeds = [b"claims_state"],
+        bump = claims_state.bump
+    )]
+    pub claims_state: Account<'info, ClaimsState>,
+
+    #[account(
         mut,
         seeds = [
             b"claim",
@@ -393,7 +471,6 @@ pub struct AIReviewClaim<'info> {
     )]
     pub claim: Account<'info, Claim>,
 
-    /// CHECK: AI oracle signer
     pub ai_oracle: Signer<'info>,
 }
 
@@ -439,37 +516,36 @@ pub struct ExecuteClaimPayout<'info> {
     )]
     pub claim: Account<'info, Claim>,
 
-    /// CHECK: Policy from policy-manager
-    pub policy: Account<'info, Policy>,
+    /// CHECK: Policy account from policy-manager, validated in handler
+    pub policy: AccountInfo<'info>,
 
-    /// CHECK: Pool state from liquidity-pool
+    /// CHECK: Pool state PDA, validated by liquidity_pool program
     #[account(mut)]
     pub pool_state: AccountInfo<'info>,
 
-    /// CHECK: Pool USDC vault
+    /// CHECK: Pool USDC vault, validated by liquidity_pool program
     #[account(mut)]
-    pub pool_vault_usdc: Account<'info, TokenAccount>,
+    pub pool_vault_usdc: AccountInfo<'info>,
 
-    /// CHECK: Pool SOL vault
+    /// CHECK: Pool SOL vault, validated by liquidity_pool program
     #[account(mut)]
     pub pool_vault_sol: AccountInfo<'info>,
 
+    /// CHECK: Claimant USDC token account, validated by liquidity_pool program
     #[account(mut)]
-    pub claimant_token_account: Account<'info, TokenAccount>,
+    pub claimant_token_account: AccountInfo<'info>,
 
-    /// CHECK: Claimant
+    /// CHECK: Claimant SOL account
     #[account(mut)]
     pub claimant: AccountInfo<'info>,
 
     /// CHECK: Liquidity pool program
     pub liquidity_pool_program: AccountInfo<'info>,
 
-    /// CHECK: Policy manager program
-    pub policy_manager_program: AccountInfo<'info>,
-
     pub authority: Signer<'info>,
 
-    pub token_program: Program<'info, Token>,
+    /// CHECK: Token program, passed to liquidity_pool CPI
+    pub token_program: AccountInfo<'info>,
 }
 
 #[derive(Accounts)]
@@ -513,6 +589,7 @@ pub struct ClaimsState {
     pub authority: Pubkey,
     pub policy_manager: Pubkey,
     pub liquidity_pool: Pubkey,
+    pub ai_oracle: Pubkey,
     pub total_claims: u64,
     pub approved_claims: u64,
     pub rejected_claims: u64,
@@ -543,8 +620,9 @@ pub struct Claim {
     pub bump: u8,
 }
 
-#[account]
-#[derive(InitSpace)]
+// Cross-program account layout matching policy_manager::Policy
+// Used for manual deserialization of accounts owned by the policy_manager program
+#[derive(AnchorDeserialize)]
 pub struct Policy {
     pub policy_id: u64,
     pub customer: Pubkey,
@@ -561,6 +639,19 @@ pub struct Policy {
     pub next_payment_due: i64,
     pub claim_count: u8,
     pub bump: u8,
+}
+
+fn deserialize_policy(policy_info: &AccountInfo, expected_owner: &Pubkey) -> Result<Policy> {
+    require!(
+        *policy_info.owner == *expected_owner,
+        ErrorCode::InvalidPolicyOwner
+    );
+    let data = policy_info.try_borrow_data()?;
+    require!(data.len() > 8, ErrorCode::InvalidPolicyData);
+    // Skip 8-byte Anchor discriminator
+    let mut slice: &[u8] = &data[8..];
+    Policy::deserialize(&mut slice)
+        .map_err(|_| error!(ErrorCode::InvalidPolicyData))
 }
 
 #[derive(AnchorSerialize, AnchorDeserialize, Clone, Copy, Debug, PartialEq, InitSpace)]
@@ -712,4 +803,25 @@ pub enum ErrorCode {
 
     #[msg("Unauthorized")]
     Unauthorized,
+
+    #[msg("Claim exceeds max auto-payout limit")]
+    ExceedsMaxAutoPayout,
+
+    #[msg("Daily auto-payout limit reached")]
+    DailyPayoutLimitReached,
+
+    #[msg("Insufficient pool liquidity")]
+    InsufficientPoolLiquidity,
+
+    #[msg("Unauthorized oracle")]
+    UnauthorizedOracle,
+
+    #[msg("Policy has expired")]
+    PolicyExpired,
+
+    #[msg("Invalid policy account owner")]
+    InvalidPolicyOwner,
+
+    #[msg("Failed to deserialize policy data")]
+    InvalidPolicyData,
 }

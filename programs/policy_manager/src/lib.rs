@@ -1,7 +1,7 @@
 use anchor_lang::prelude::*;
 use anchor_spl::token::{self, Token, TokenAccount, Transfer};
 
-declare_id!("Po1icy11111111111111111111111111111111111111");
+declare_id!("BRNje37d7CY7tejLxQdVe8HN7eXQptoD42RqwA3awGFk");
 
 #[program]
 pub mod policy_manager {
@@ -164,6 +164,11 @@ pub mod policy_manager {
         require!(
             policy.status == PolicyStatus::Active,
             ErrorCode::PolicyNotActive
+        );
+
+        require!(
+            Clock::get()?.unix_timestamp < policy.expiry_date,
+            ErrorCode::PolicyExpired
         );
 
         require!(
@@ -751,4 +756,7 @@ pub enum ErrorCode {
 
     #[msg("Unauthorized")]
     Unauthorized,
+
+    #[msg("Policy has expired")]
+    PolicyExpired,
 }

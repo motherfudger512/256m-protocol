@@ -1,2 +1,2 @@
-[resolver]
-version = "2"
+[unstable]
+next-lockfile-bump = true

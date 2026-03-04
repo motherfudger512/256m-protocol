@@ -1,7 +1,7 @@
 use anchor_lang::prelude::*;
 use anchor_spl::token::{self, Token, TokenAccount, Mint, Transfer, MintTo, Burn};
 
-declare_id!("LPoo1111111111111111111111111111111111111111");
+declare_id!("FTmjzse3pxVhqGUEVKPRsyWvRmPwnAGQHVLgBmVbbGCG");
 
 #[program]
 pub mod liquidity_pool {
@@ -10,9 +10,11 @@ pub mod liquidity_pool {
     pub fn initialize_pool(
         ctx: Context<InitializePool>,
         lp_fee_bps: u16,
+        max_deployment_bps: u16,
     ) -> Result<()> {
         require!(lp_fee_bps <= 2000, ErrorCode::FeeTooHigh);
-        
+        require!(max_deployment_bps <= 9000, ErrorCode::MaxDeploymentTooHigh);
+
         let pool_state = &mut ctx.accounts.pool_state;
         pool_state.authority = ctx.accounts.authority.key();
         pool_state.pool_vault_usdc = ctx.accounts.pool_vault_usdc.key();
@@ -26,11 +28,14 @@ pub mod liquidity_pool {
         pool_state.total_claims_paid = 0;
         pool_state.total_interest_earned = 0;
         pool_state.last_interest_snapshot = Clock::get()?.unix_timestamp;
+        pool_state.total_deployed_usdc = 0;
+        pool_state.total_deployed_sol = 0;
         pool_state.lp_fee_bps = lp_fee_bps;
         pool_state.scr_coverage_ratio = 10000;
+        pool_state.max_deployment_bps = max_deployment_bps;
         pool_state.bump = ctx.bumps.pool_state;
 
-        msg!("Pool initialized with LP fee: {}bps", lp_fee_bps);
+        msg!("Pool initialized with LP fee: {}bps, max deployment: {}bps", lp_fee_bps, max_deployment_bps);
         Ok(())
     }
 
@@ -56,7 +61,7 @@ pub mod liquidity_pool {
         token::transfer(cpi_ctx, amount)?;
 
         let seeds = &[
-            b"pool_state",
+            b"pool_state".as_ref(),
             &[pool_state.bump],
         ];
         let signer = &[&seeds[..]];
@@ -130,7 +135,7 @@ pub mod liquidity_pool {
         )?;
 
         let seeds = &[
-            b"pool_state",
+            b"pool_state".as_ref(),
             &[pool_state.bump],
         ];
         let signer = &[&seeds[..]];
@@ -211,7 +216,7 @@ pub mod liquidity_pool {
         token::burn(burn_ctx, lp_tokens)?;
 
         let seeds = &[
-            b"pool_state",
+            b"pool_state".as_ref(),
             &[pool_state.bump],
         ];
         let signer = &[&seeds[..]];
@@ -363,7 +368,7 @@ pub mod liquidity_pool {
                 );
 
                 let seeds = &[
-                    b"pool_state",
+                    b"pool_state".as_ref(),
                     &[pool_state.bump],
                 ];
                 let signer = &[&seeds[..]];
@@ -423,6 +428,259 @@ pub mod liquidity_pool {
         });
 
         msg!("Executed payout: {} {:?}", amount, asset_type);
+        Ok(())
+    }
+
+    pub fn deploy_capital(
+        ctx: Context<DeployCapital>,
+        amount: u64,
+        asset_type: AssetType,
+    ) -> Result<()> {
+        require!(amount > 0, ErrorCode::InvalidAmount);
+
+        let pool_state = &mut ctx.accounts.pool_state;
+
+        require!(
+            ctx.accounts.authority.key() == pool_state.authority,
+            ErrorCode::Unauthorized
+        );
+
+        // Check deployment wouldn't exceed max_deployment_bps of total pool value
+        let pool_value = calculate_pool_value(pool_state)?;
+        let current_deployed = pool_state.total_deployed_usdc
+            .checked_add(pool_state.total_deployed_sol)
+            .ok_or(ErrorCode::Overflow)?;
+        let new_deployed = current_deployed
+            .checked_add(amount)
+            .ok_or(ErrorCode::Overflow)?;
+        let max_deployable = (pool_value as u128)
+            .checked_mul(pool_state.max_deployment_bps as u128)
+            .ok_or(ErrorCode::Overflow)?
+            .checked_div(10000)
+            .ok_or(ErrorCode::DivisionByZero)? as u64;
+        require!(new_deployed <= max_deployable, ErrorCode::ExceedsMaxDeployment);
+
+        match asset_type {
+            AssetType::USDC => {
+                require!(
+                    ctx.accounts.pool_vault_usdc.amount >= amount,
+                    ErrorCode::InsufficientPoolLiquidity
+                );
+
+                let seeds = &[
+                    b"pool_state".as_ref(),
+                    &[pool_state.bump],
+                ];
+                let signer = &[&seeds[..]];
+
+                let transfer_ctx = CpiContext::new_with_signer(
+                    ctx.accounts.token_program.to_account_info(),
+                    Transfer {
+                        from: ctx.accounts.pool_vault_usdc.to_account_info(),
+                        to: ctx.accounts.destination_usdc.to_account_info(),
+                        authority: pool_state.to_account_info(),
+                    },
+                    signer,
+                );
+                token::transfer(transfer_ctx, amount)?;
+
+                pool_state.total_capital_usdc = pool_state.total_capital_usdc
+                    .checked_sub(amount)
+                    .ok_or(ErrorCode::Underflow)?;
+                pool_state.total_deployed_usdc = pool_state.total_deployed_usdc
+                    .checked_add(amount)
+                    .ok_or(ErrorCode::Overflow)?;
+            }
+            AssetType::SOL => {
+                require!(
+                    ctx.accounts.pool_vault_sol.lamports() >= amount,
+                    ErrorCode::InsufficientPoolLiquidity
+                );
+
+                **ctx.accounts.pool_vault_sol.try_borrow_mut_lamports()? = ctx.accounts
+                    .pool_vault_sol
+                    .lamports()
+                    .checked_sub(amount)
+                    .ok_or(ErrorCode::Underflow)?;
+
+                **ctx.accounts.destination_sol.try_borrow_mut_lamports()? = ctx.accounts
+                    .destination_sol
+                    .lamports()
+                    .checked_add(amount)
+                    .ok_or(ErrorCode::Overflow)?;
+
+                pool_state.total_capital_sol = pool_state.total_capital_sol
+                    .checked_sub(amount)
+                    .ok_or(ErrorCode::Underflow)?;
+                pool_state.total_deployed_sol = pool_state.total_deployed_sol
+                    .checked_add(amount)
+                    .ok_or(ErrorCode::Overflow)?;
+            }
+        }
+
+        pool_state.scr_coverage_ratio = calculate_scr_coverage(pool_state);
+
+        let total_deployed = pool_state.total_deployed_usdc
+            .checked_add(pool_state.total_deployed_sol)
+            .ok_or(ErrorCode::Overflow)?;
+
+        emit!(CapitalDeployedEvent {
+            amount,
+            asset_type,
+            destination: match asset_type {
+                AssetType::USDC => ctx.accounts.destination_usdc.key(),
+                AssetType::SOL => ctx.accounts.destination_sol.key(),
+            },
+            total_deployed,
+            timestamp: Clock::get()?.unix_timestamp,
+        });
+
+        msg!("Deployed capital: {} {:?}", amount, asset_type);
+        Ok(())
+    }
+
+    pub fn recall_capital(
+        ctx: Context<RecallCapital>,
+        amount: u64,
+        asset_type: AssetType,
+    ) -> Result<()> {
+        require!(amount > 0, ErrorCode::InvalidAmount);
+
+        let pool_state = &mut ctx.accounts.pool_state;
+
+        require!(
+            ctx.accounts.authority.key() == pool_state.authority,
+            ErrorCode::Unauthorized
+        );
+
+        match asset_type {
+            AssetType::USDC => {
+                // Transfer USDC from source back to pool vault
+                // Authority signs as the token account owner
+                let transfer_ctx = CpiContext::new(
+                    ctx.accounts.token_program.to_account_info(),
+                    Transfer {
+                        from: ctx.accounts.source_usdc.to_account_info(),
+                        to: ctx.accounts.pool_vault_usdc.to_account_info(),
+                        authority: ctx.accounts.authority.to_account_info(),
+                    },
+                );
+                token::transfer(transfer_ctx, amount)?;
+
+                if amount > pool_state.total_deployed_usdc {
+                    // Excess is yield profit — all deployed capital recalled
+                    pool_state.total_deployed_usdc = 0;
+                } else {
+                    pool_state.total_deployed_usdc = pool_state.total_deployed_usdc
+                        .checked_sub(amount)
+                        .ok_or(ErrorCode::Underflow)?;
+                }
+                pool_state.total_capital_usdc = pool_state.total_capital_usdc
+                    .checked_add(amount)
+                    .ok_or(ErrorCode::Overflow)?;
+            }
+            AssetType::SOL => {
+                // Transfer SOL from authority back to pool vault
+                let ix = anchor_lang::solana_program::system_instruction::transfer(
+                    &ctx.accounts.authority.key(),
+                    &ctx.accounts.pool_vault_sol.key(),
+                    amount,
+                );
+                anchor_lang::solana_program::program::invoke(
+                    &ix,
+                    &[
+                        ctx.accounts.authority.to_account_info(),
+                        ctx.accounts.pool_vault_sol.to_account_info(),
+                        ctx.accounts.system_program.to_account_info(),
+                    ],
+                )?;
+
+                if amount > pool_state.total_deployed_sol {
+                    pool_state.total_deployed_sol = 0;
+                } else {
+                    pool_state.total_deployed_sol = pool_state.total_deployed_sol
+                        .checked_sub(amount)
+                        .ok_or(ErrorCode::Underflow)?;
+                }
+                pool_state.total_capital_sol = pool_state.total_capital_sol
+                    .checked_add(amount)
+                    .ok_or(ErrorCode::Overflow)?;
+            }
+        }
+
+        pool_state.scr_coverage_ratio = calculate_scr_coverage(pool_state);
+
+        let total_deployed = pool_state.total_deployed_usdc
+            .checked_add(pool_state.total_deployed_sol)
+            .ok_or(ErrorCode::Overflow)?;
+
+        emit!(CapitalRecalledEvent {
+            amount,
+            asset_type,
+            source: match asset_type {
+                AssetType::USDC => ctx.accounts.source_usdc.key(),
+                AssetType::SOL => ctx.accounts.authority.key(),
+            },
+            total_deployed,
+            timestamp: Clock::get()?.unix_timestamp,
+        });
+
+        msg!("Recalled capital: {} {:?}", amount, asset_type);
+        Ok(())
+    }
+
+    pub fn write_off_deployment_loss(
+        ctx: Context<WriteOffDeploymentLoss>,
+        amount: u64,
+        asset_type: AssetType,
+    ) -> Result<()> {
+        require!(amount > 0, ErrorCode::InvalidAmount);
+
+        let pool_state = &mut ctx.accounts.pool_state;
+
+        require!(
+            ctx.accounts.authority.key() == pool_state.authority,
+            ErrorCode::Unauthorized
+        );
+
+        match asset_type {
+            AssetType::USDC => {
+                require!(
+                    amount <= pool_state.total_deployed_usdc,
+                    ErrorCode::LossExceedsDeployed
+                );
+                pool_state.total_deployed_usdc = pool_state.total_deployed_usdc
+                    .checked_sub(amount)
+                    .ok_or(ErrorCode::Underflow)?;
+            }
+            AssetType::SOL => {
+                require!(
+                    amount <= pool_state.total_deployed_sol,
+                    ErrorCode::LossExceedsDeployed
+                );
+                pool_state.total_deployed_sol = pool_state.total_deployed_sol
+                    .checked_sub(amount)
+                    .ok_or(ErrorCode::Underflow)?;
+            }
+        }
+
+        // No funds move — this is purely an accounting adjustment.
+        // Pool value drops because deployed capital decreased
+        // without a corresponding increase in liquid capital.
+        pool_state.scr_coverage_ratio = calculate_scr_coverage(pool_state);
+
+        let total_deployed = pool_state.total_deployed_usdc
+            .checked_add(pool_state.total_deployed_sol)
+            .ok_or(ErrorCode::Overflow)?;
+
+        emit!(DeploymentLossEvent {
+            amount,
+            asset_type,
+            total_deployed,
+            timestamp: Clock::get()?.unix_timestamp,
+        });
+
+        msg!("Written off deployment loss: {} {:?}", amount, asset_type);
         Ok(())
     }
 
@@ -534,12 +792,16 @@ fn calculate_lp_tokens_to_mint(deposit_amount: u64, pool_state: &PoolState) -> R
         Ok(deposit_amount)
     } else {
         let pool_value = calculate_pool_value(pool_state)?;
-        
+        require!(pool_value > 0, ErrorCode::DivisionByZero);
+
         let lp_tokens = (deposit_amount as u128)
             .checked_mul(pool_state.total_lp_supply as u128)
             .ok_or(ErrorCode::Overflow)?
             .checked_div(pool_value as u128)
             .ok_or(ErrorCode::DivisionByZero)?;
+
+        // Prevent zero-token minting from truncation — depositors must receive at least 1 LP token
+        require!(lp_tokens > 0, ErrorCode::DepositTooSmall);
 
         Ok(lp_tokens as u64)
     }
@@ -574,13 +836,17 @@ fn calculate_pool_value(pool_state: &PoolState) -> Result<u64> {
     let value = pool_state.total_capital_usdc
         .checked_add(pool_state.total_capital_sol)
         .ok_or(ErrorCode::Overflow)?
+        .checked_add(pool_state.total_deployed_usdc)
+        .ok_or(ErrorCode::Overflow)?
+        .checked_add(pool_state.total_deployed_sol)
+        .ok_or(ErrorCode::Overflow)?
         .checked_add(pool_state.total_premiums_collected)
         .ok_or(ErrorCode::Overflow)?
         .checked_add(pool_state.total_interest_earned)
         .ok_or(ErrorCode::Overflow)?
         .checked_sub(pool_state.total_claims_paid)
         .ok_or(ErrorCode::Underflow)?;
-    
+
     Ok(value)
 }
 
@@ -591,6 +857,8 @@ fn calculate_scr_coverage(pool_state: &PoolState) -> u16 {
 
     let total_capital = pool_state.total_capital_usdc
         .saturating_add(pool_state.total_capital_sol)
+        .saturating_add(pool_state.total_deployed_usdc)
+        .saturating_add(pool_state.total_deployed_sol)
         .saturating_add(pool_state.total_premiums_collected)
         .saturating_add(pool_state.total_interest_earned)
         .saturating_sub(pool_state.total_claims_paid);
@@ -793,275 +1061,415 @@ pub struct WithdrawLPUSDC<'info> {
     #[account(
         mut,
         seeds = [b"pool_vault_usdc"],
-bump
-)]
-pub pool_vault_usdc: Account<'info, TokenAccount>,
-#[account(
-    mut,
-    seeds = [b"lp_token_mint"],
-    bump
-)]
-pub lp_token_mint: Account<'info, Mint>,
+        bump
+    )]
+    pub pool_vault_usdc: Account<'info, TokenAccount>,
 
-#[account(mut)]
-pub withdrawer_usdc: Account<'info, TokenAccount>,
+    #[account(
+        mut,
+        seeds = [b"lp_token_mint"],
+        bump
+    )]
+    pub lp_token_mint: Account<'info, Mint>,
 
-#[account(mut)]
-pub withdrawer_lp_token: Account<'info, TokenAccount>,
+    #[account(mut)]
+    pub withdrawer_usdc: Account<'info, TokenAccount>,
 
-#[account(mut)]
-pub withdrawer: Signer<'info>,
+    #[account(mut)]
+    pub withdrawer_lp_token: Account<'info, TokenAccount>,
 
-pub token_program: Program<'info, Token>,
+    #[account(mut)]
+    pub withdrawer: Signer<'info>,
+
+    pub token_program: Program<'info, Token>,
 }
+
 #[derive(Accounts)]
 pub struct WithdrawLPSOL<'info> {
-#[account(
-mut,
-seeds = [b"pool_state"],
-bump = pool_state.bump
-)]
-pub pool_state: Account<'info, PoolState>,
-#[account(
-    mut,
-    seeds = [b"lp_position", withdrawer.key().as_ref()],
-    bump = lp_position.bump
-)]
-pub lp_position: Account<'info, LPPosition>,
+    #[account(
+        mut,
+        seeds = [b"pool_state"],
+        bump = pool_state.bump
+    )]
+    pub pool_state: Account<'info, PoolState>,
 
-/// CHECK: SOL vault PDA
-#[account(
-    mut,
-    seeds = [b"pool_vault_sol"],
-    bump
-)]
-pub pool_vault_sol: AccountInfo<'info>,
+    #[account(
+        mut,
+        seeds = [b"lp_position", withdrawer.key().as_ref()],
+        bump = lp_position.bump
+    )]
+    pub lp_position: Account<'info, LPPosition>,
 
-#[account(
-    mut,
-    seeds = [b"lp_token_mint"],
-    bump
-)]
-pub lp_token_mint: Account<'info, Mint>,
+    /// CHECK: SOL vault PDA
+    #[account(
+        mut,
+        seeds = [b"pool_vault_sol"],
+        bump
+    )]
+    pub pool_vault_sol: AccountInfo<'info>,
 
-#[account(mut)]
-pub withdrawer_lp_token: Account<'info, TokenAccount>,
+    #[account(
+        mut,
+        seeds = [b"lp_token_mint"],
+        bump
+    )]
+    pub lp_token_mint: Account<'info, Mint>,
 
-#[account(mut)]
-pub withdrawer: Signer<'info>,
+    #[account(mut)]
+    pub withdrawer_lp_token: Account<'info, TokenAccount>,
 
-pub token_program: Program<'info, Token>,
+    #[account(mut)]
+    pub withdrawer: Signer<'info>,
+
+    pub token_program: Program<'info, Token>,
 }
+
 #[derive(Accounts)]
 pub struct RecordPremium<'info> {
-#[account(
-mut,
-seeds = [b"pool_state"],
-bump = pool_state.bump
-)]
-pub pool_state: Account<'info, PoolState>,
-/// CHECK: Only policy-manager program can call this
-pub policy_manager: Signer<'info>,
+    #[account(
+        mut,
+        seeds = [b"pool_state"],
+        bump = pool_state.bump
+    )]
+    pub pool_state: Account<'info, PoolState>,
+
+    /// CHECK: Only policy-manager program can call this
+    pub policy_manager: Signer<'info>,
 }
+
 #[derive(Accounts)]
 pub struct ExecutePayout<'info> {
-#[account(
-mut,
-seeds = [b"pool_state"],
-bump = pool_state.bump
-)]
-pub pool_state: Account<'info, PoolState>,
-#[account(
-    mut,
-    seeds = [b"pool_vault_usdc"],
-    bump
-)]
-pub pool_vault_usdc: Account<'info, TokenAccount>,
+    #[account(
+        mut,
+        seeds = [b"pool_state"],
+        bump = pool_state.bump
+    )]
+    pub pool_state: Account<'info, PoolState>,
 
-/// CHECK: SOL vault PDA
-#[account(
-    mut,
-    seeds = [b"pool_vault_sol"],
-    bump
-)]
-pub pool_vault_sol: AccountInfo<'info>,
+    #[account(
+        mut,
+        seeds = [b"pool_vault_usdc"],
+        bump
+    )]
+    pub pool_vault_usdc: Account<'info, TokenAccount>,
 
-#[account(mut)]
-pub claimant_usdc: Account<'info, TokenAccount>,
+    /// CHECK: SOL vault PDA
+    #[account(
+        mut,
+        seeds = [b"pool_vault_sol"],
+        bump
+    )]
+    pub pool_vault_sol: AccountInfo<'info>,
 
-/// CHECK: Claimant can receive SOL
-#[account(mut)]
-pub claimant: AccountInfo<'info>,
+    #[account(mut)]
+    pub claimant_usdc: Account<'info, TokenAccount>,
 
-/// CHECK: Only claims-processor program can call this
-pub claims_processor: Signer<'info>,
+    /// CHECK: Claimant can receive SOL
+    #[account(mut)]
+    pub claimant: AccountInfo<'info>,
 
-pub token_program: Program<'info, Token>,
+    /// CHECK: Only claims-processor program can call this
+    pub claims_processor: Signer<'info>,
+
+    pub token_program: Program<'info, Token>,
 }
+
+#[derive(Accounts)]
+pub struct DeployCapital<'info> {
+    #[account(
+        mut,
+        seeds = [b"pool_state"],
+        bump = pool_state.bump
+    )]
+    pub pool_state: Account<'info, PoolState>,
+
+    #[account(
+        mut,
+        seeds = [b"pool_vault_usdc"],
+        bump
+    )]
+    pub pool_vault_usdc: Account<'info, TokenAccount>,
+
+    /// CHECK: SOL vault PDA
+    #[account(
+        mut,
+        seeds = [b"pool_vault_sol"],
+        bump
+    )]
+    pub pool_vault_sol: AccountInfo<'info>,
+
+    /// CHECK: Destination for deployed USDC
+    #[account(mut)]
+    pub destination_usdc: AccountInfo<'info>,
+
+    /// CHECK: Destination for deployed SOL
+    #[account(mut)]
+    pub destination_sol: AccountInfo<'info>,
+
+    #[account(mut)]
+    pub authority: Signer<'info>,
+
+    pub token_program: Program<'info, Token>,
+}
+
+#[derive(Accounts)]
+pub struct RecallCapital<'info> {
+    #[account(
+        mut,
+        seeds = [b"pool_state"],
+        bump = pool_state.bump
+    )]
+    pub pool_state: Account<'info, PoolState>,
+
+    #[account(
+        mut,
+        seeds = [b"pool_vault_usdc"],
+        bump
+    )]
+    pub pool_vault_usdc: Account<'info, TokenAccount>,
+
+    /// CHECK: SOL vault PDA
+    #[account(
+        mut,
+        seeds = [b"pool_vault_sol"],
+        bump
+    )]
+    pub pool_vault_sol: AccountInfo<'info>,
+
+    /// CHECK: Source USDC account for recalled capital
+    #[account(mut)]
+    pub source_usdc: AccountInfo<'info>,
+
+    #[account(mut)]
+    pub authority: Signer<'info>,
+
+    pub token_program: Program<'info, Token>,
+    pub system_program: Program<'info, System>,
+}
+
+#[derive(Accounts)]
+pub struct WriteOffDeploymentLoss<'info> {
+    #[account(
+        mut,
+        seeds = [b"pool_state"],
+        bump = pool_state.bump
+    )]
+    pub pool_state: Account<'info, PoolState>,
+
+    pub authority: Signer<'info>,
+}
+
 #[derive(Accounts)]
 #[instruction(epoch: u64)]
 pub struct RecordInterestSnapshot<'info> {
-#[account(
-mut,
-seeds = [b"pool_state"],
-bump = pool_state.bump
-)]
-pub pool_state: Account<'info, PoolState>,
-#[account(
-    init,
-    payer = authority,
-    space = 8 + InterestSnapshot::INIT_SPACE,
-    seeds = [b"interest_snapshot", epoch.to_le_bytes().as_ref()],
-    bump
-)]
-pub interest_snapshot: Account<'info, InterestSnapshot>,
+    #[account(
+        mut,
+        seeds = [b"pool_state"],
+        bump = pool_state.bump
+    )]
+    pub pool_state: Account<'info, PoolState>,
 
-#[account(mut)]
-pub authority: Signer<'info>,
+    #[account(
+        init,
+        payer = authority,
+        space = 8 + InterestSnapshot::INIT_SPACE,
+        seeds = [b"interest_snapshot", epoch.to_le_bytes().as_ref()],
+        bump
+    )]
+    pub interest_snapshot: Account<'info, InterestSnapshot>,
 
-pub system_program: Program<'info, System>,
+    #[account(mut)]
+    pub authority: Signer<'info>,
+
+    pub system_program: Program<'info, System>,
 }
+
 #[derive(Accounts)]
 pub struct UpdateSCR<'info> {
-#[account(
-mut,
-seeds = [b"pool_state"],
-bump = pool_state.bump
-)]
-pub pool_state: Account<'info, PoolState>,
-pub authority: Signer<'info>,
+    #[account(
+        mut,
+        seeds = [b"pool_state"],
+        bump = pool_state.bump
+    )]
+    pub pool_state: Account<'info, PoolState>,
+
+    pub authority: Signer<'info>,
 }
+
 #[derive(Accounts)]
 pub struct DistributeRewards<'info> {
-#[account(
-seeds = [b"pool_state"],
-bump = pool_state.bump
-)]
-pub pool_state: Account<'info, PoolState>,
-#[account(
-    mut,
-    seeds = [b"lp_position", lp_position.owner.as_ref()],
-    bump = lp_position.bump
-)]
-pub lp_position: Account<'info, LPPosition>,
+    #[account(
+        seeds = [b"pool_state"],
+        bump = pool_state.bump
+    )]
+    pub pool_state: Account<'info, PoolState>,
 
-pub authority: Signer<'info>,
+    #[account(
+        mut,
+        seeds = [b"lp_position", lp_position.owner.as_ref()],
+        bump = lp_position.bump
+    )]
+    pub lp_position: Account<'info, LPPosition>,
+
+    pub authority: Signer<'info>,
 }
+
 #[account]
 #[derive(InitSpace)]
 pub struct PoolState {
-pub authority: Pubkey,
-pub pool_vault_usdc: Pubkey,
-pub pool_vault_sol: Pubkey,
-pub lp_token_mint: Pubkey,
-pub total_lp_supply: u64,
-pub total_capital_usdc: u64,
-pub total_capital_sol: u64,
-pub statutory_capital_required: u64,
-pub total_premiums_collected: u64,
-pub total_claims_paid: u64,
-pub total_interest_earned: u64,
-pub last_interest_snapshot: i64,
-pub lp_fee_bps: u16,
-pub scr_coverage_ratio: u16,
-pub bump: u8,
+    pub authority: Pubkey,
+    pub pool_vault_usdc: Pubkey,
+    pub pool_vault_sol: Pubkey,
+    pub lp_token_mint: Pubkey,
+    pub total_lp_supply: u64,
+    pub total_capital_usdc: u64,
+    pub total_capital_sol: u64,
+    pub statutory_capital_required: u64,
+    pub total_premiums_collected: u64,
+    pub total_claims_paid: u64,
+    pub total_interest_earned: u64,
+    pub last_interest_snapshot: i64,
+    pub total_deployed_usdc: u64,
+    pub total_deployed_sol: u64,
+    pub lp_fee_bps: u16,
+    pub scr_coverage_ratio: u16,
+    pub max_deployment_bps: u16,
+    pub bump: u8,
 }
 #[account]
 #[derive(InitSpace)]
 pub struct LPPosition {
-pub owner: Pubkey,
-pub lp_tokens: u64,
-pub usdc_deposited: u64,
-pub sol_deposited: u64,
-pub rewards_earned: u64,
-pub last_deposit: i64,
-pub last_withdrawal: i64,
-pub bump: u8,
+    pub owner: Pubkey,
+    pub lp_tokens: u64,
+    pub usdc_deposited: u64,
+    pub sol_deposited: u64,
+    pub rewards_earned: u64,
+    pub last_deposit: i64,
+    pub last_withdrawal: i64,
+    pub bump: u8,
 }
+
 #[account]
 #[derive(InitSpace)]
 pub struct InterestSnapshot {
-pub epoch: u64,
-pub timestamp: i64,
-pub total_capital: u64,
-pub interest_rate_bps: u16,
-pub interest_accrued: u64,
-pub bump: u8,
+    pub epoch: u64,
+    pub timestamp: i64,
+    pub total_capital: u64,
+    pub interest_rate_bps: u16,
+    pub interest_accrued: u64,
+    pub bump: u8,
 }
+
 #[derive(AnchorSerialize, AnchorDeserialize, Clone, Copy, Debug, PartialEq)]
 pub enum AssetType {
-USDC,
-SOL,
+    USDC,
+    SOL,
 }
+
 #[event]
 pub struct DepositEvent {
-pub depositor: Pubkey,
-pub amount: u64,
-pub lp_tokens_minted: u64,
-pub timestamp: i64,
+    pub depositor: Pubkey,
+    pub amount: u64,
+    pub lp_tokens_minted: u64,
+    pub timestamp: i64,
 }
+
 #[event]
 pub struct WithdrawalEvent {
-pub withdrawer: Pubkey,
-pub lp_tokens_burned: u64,
-pub amount_received: u64,
-pub fee_retained: u64,
-pub timestamp: i64,
+    pub withdrawer: Pubkey,
+    pub lp_tokens_burned: u64,
+    pub amount_received: u64,
+    pub fee_retained: u64,
+    pub timestamp: i64,
 }
+
 #[event]
 pub struct PremiumRecordedEvent {
-pub amount: u64,
-pub total_premiums: u64,
-pub timestamp: i64,
+    pub amount: u64,
+    pub total_premiums: u64,
+    pub timestamp: i64,
 }
+
 #[event]
 pub struct PayoutEvent {
-pub claimant: Pubkey,
-pub amount: u64,
-pub asset_type: AssetType,
-pub timestamp: i64,
+    pub claimant: Pubkey,
+    pub amount: u64,
+    pub asset_type: AssetType,
+    pub timestamp: i64,
 }
+
 #[event]
 pub struct InterestSnapshotEvent {
-pub epoch: u64,
-pub interest_accrued: u64,
-pub total_interest: u64,
-pub timestamp: i64,
+    pub epoch: u64,
+    pub interest_accrued: u64,
+    pub total_interest: u64,
+    pub timestamp: i64,
 }
+
 #[event]
 pub struct SCRUpdateEvent {
-pub new_scr: u64,
-pub coverage_ratio: u16,
-pub timestamp: i64,
+    pub new_scr: u64,
+    pub coverage_ratio: u16,
+    pub timestamp: i64,
 }
+
 #[event]
 pub struct RewardDistributionEvent {
-pub lp_owner: Pubkey,
-pub reward_amount: u64,
-pub timestamp: i64,
+    pub lp_owner: Pubkey,
+    pub reward_amount: u64,
+    pub timestamp: i64,
 }
+
+#[event]
+pub struct CapitalDeployedEvent {
+    pub amount: u64,
+    pub asset_type: AssetType,
+    pub destination: Pubkey,
+    pub total_deployed: u64,
+    pub timestamp: i64,
+}
+
+#[event]
+pub struct CapitalRecalledEvent {
+    pub amount: u64,
+    pub asset_type: AssetType,
+    pub source: Pubkey,
+    pub total_deployed: u64,
+    pub timestamp: i64,
+}
+
+#[event]
+pub struct DeploymentLossEvent {
+    pub amount: u64,
+    pub asset_type: AssetType,
+    pub total_deployed: u64,
+    pub timestamp: i64,
+}
+
 #[error_code]
 pub enum ErrorCode {
-#[msg("Fee cannot exceed 20%")]
-FeeTooHigh,
-#[msg("Invalid amount")]
-InvalidAmount,
-
-#[msg("Insufficient LP tokens")]
-InsufficientLPTokens,
-
-#[msg("Insufficient pool liquidity")]
-InsufficientPoolLiquidity,
-
-#[msg("Arithmetic overflow")]
-Overflow,
-
-#[msg("Arithmetic underflow")]
-Underflow,
-
-#[msg("Division by zero")]
-DivisionByZero,
-
-#[msg("Unauthorized")]
-Unauthorized,
+    #[msg("Fee cannot exceed 20%")]
+    FeeTooHigh,
+    #[msg("Invalid amount")]
+    InvalidAmount,
+    #[msg("Insufficient LP tokens")]
+    InsufficientLPTokens,
+    #[msg("Insufficient pool liquidity")]
+    InsufficientPoolLiquidity,
+    #[msg("Arithmetic overflow")]
+    Overflow,
+    #[msg("Arithmetic underflow")]
+    Underflow,
+    #[msg("Division by zero")]
+    DivisionByZero,
+    #[msg("Unauthorized")]
+    Unauthorized,
+    #[msg("Deposit too small to mint LP tokens")]
+    DepositTooSmall,
+    #[msg("Deployment would exceed max deployment limit")]
+    ExceedsMaxDeployment,
+    #[msg("Max deployment BPS cannot exceed 9000 (90%)")]
+    MaxDeploymentTooHigh,
+    #[msg("Loss amount exceeds currently deployed capital")]
+    LossExceedsDeployed,
 }
