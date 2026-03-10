@@ -3,13 +3,21 @@
 import Link from "next/link";
 import Image from "next/image";
 import { WalletButton } from "@/components/wallet/WalletButton";
+import { NetworkSwitcher } from "@/components/wallet/NetworkSwitcher";
+import { useChain } from "@/chains/ChainContext";
 
 export default function Home() {
+  const { adapter } = useChain();
+  const supportsNative = adapter.config.id === "solana";
+
   return (
     <div className="min-h-screen flex flex-col">
       <header className="flex items-center justify-between px-8 py-4 border-b border-gray-800">
         <Image src="/logo.svg" alt="256M" width={120} height={25} priority />
-        <WalletButton />
+        <div className="flex items-center gap-3">
+          <NetworkSwitcher />
+          <WalletButton />
+        </div>
       </header>
 
       <main className="flex-1 flex flex-col items-center justify-center gap-8 px-8">
@@ -41,7 +49,7 @@ export default function Home() {
           >
             <h3 className="text-xl font-semibold mb-2">LP Provider</h3>
             <p className="text-gray-400 text-sm">
-              Deposit USDC or SOL into the liquidity pool to earn yields from
+              Deposit {supportsNative ? "USDC or SOL" : "USDC"} into the liquidity pool to earn yields from
               premiums and interest.
             </p>
           </Link>

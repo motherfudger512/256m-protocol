@@ -1,11 +1,10 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { useAnchorWallet } from "@solana/wallet-adapter-react";
+import { useChain } from "@/chains/ChainContext";
 import { usePolicyholder } from "@/hooks/usePolicyholder";
 import { usePolicies } from "@/hooks/usePolicies";
 import { TransactionToast } from "@/components/shared/TransactionToast";
-import { usdcToBase, getEnumVariant, baseToUsdc } from "@/lib/formatting";
 
 // Generate a deterministic-looking case reference from the current timestamp
 function generateCaseNumber(): string {
@@ -15,7 +14,7 @@ function generateCaseNumber(): string {
 }
 
 export default function NewClaimPage() {
-  const wallet = useAnchorWallet();
+  const { adapter } = useChain();
   const { submitClaim, loading, error, txSignature } = usePolicyholder();
   const { policies, loading: policiesLoading } = usePolicies();
 
@@ -29,9 +28,7 @@ export default function NewClaimPage() {
   const [caseNumber, setCaseNumber] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const activePolicies = policies.filter(
-    (p: any) => getEnumVariant(p.account.status) === "active",
-  );
+  const activePolicies = policies.filter((p) => p.status === "active");
 
   const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
   const ALLOWED_TYPES = ["application/pdf", "image/png", "image/jpeg"];
@@ -70,10 +67,10 @@ export default function NewClaimPage() {
 
     try {
       await submitClaim(
-        policy.publicKey,
-        claimType === "theft" ? { theft: {} } : { loss: {} },
+        policy.id,
+        claimType,
         docHash,
-        usdcToBase(parseFloat(claimedAmount)),
+        parseFloat(claimedAmount),
       );
       const ref = generateCaseNumber();
       setCaseNumber(ref);
@@ -156,10 +153,10 @@ export default function NewClaimPage() {
               className="w-full bg-gray-900 border border-gray-700 rounded px-3 py-2 text-sm focus:border-brand-500 focus:outline-none"
             >
               <option value={-1}>-- Select a policy --</option>
-              {activePolicies.map((p: any, i: number) => (
+              {activePolicies.map((p, i) => (
                 <option key={i} value={i}>
-                  Policy #{p.account.policyId.toNumber()} &mdash; Insured:{" "}
-                  {baseToUsdc(p.account.insuredValue)} USDC
+                  Policy #{p.id} &mdash; Insured:{" "}
+                  {p.insuredValue.toLocaleString()} USDC
                 </option>
               ))}
             </select>

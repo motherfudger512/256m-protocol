@@ -1,5 +1,7 @@
 "use client";
 
+import { useChain } from "@/chains/ChainContext";
+
 interface Props {
   loading: boolean;
   error: string | null;
@@ -7,6 +9,9 @@ interface Props {
 }
 
 export function TransactionToast({ loading, error, txSignature }: Props) {
+  const { adapter } = useChain();
+  const { explorerUrl, explorerTxPath } = adapter.config;
+
   if (loading) {
     return (
       <div className="fixed bottom-4 right-4 bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-sm">
@@ -24,12 +29,18 @@ export function TransactionToast({ loading, error, txSignature }: Props) {
   }
 
   if (txSignature) {
+    const txUrl = `${explorerUrl}${explorerTxPath}${txSignature}`;
     return (
       <div className="fixed bottom-4 right-4 bg-green-900/50 border border-green-700 rounded-lg px-4 py-3 text-sm text-green-200">
         Transaction confirmed:{" "}
-        <span className="font-mono text-xs">
+        <a
+          href={txUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="font-mono text-xs underline hover:text-green-100"
+        >
           {txSignature.slice(0, 8)}...
-        </span>
+        </a>
       </div>
     );
   }

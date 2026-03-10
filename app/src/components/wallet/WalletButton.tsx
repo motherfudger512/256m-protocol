@@ -1,28 +1,31 @@
 "use client";
 
+import { useChain } from "@/chains/ChainContext";
 import { useWallet } from "@solana/wallet-adapter-react";
-import { useWalletModal } from "@solana/wallet-adapter-react-ui";
 import { useCallback, useMemo } from "react";
 
 export function WalletButton() {
-  const { publicKey, wallet, disconnect, connecting } = useWallet();
-  const { setVisible } = useWalletModal();
+  const { adapter, activeChain } = useChain();
+  const { connected, connecting, walletAddress } = adapter;
 
-  const connected = !!publicKey;
+  // Solana-specific: wallet icon
+  const { wallet: solWallet } = useWallet();
 
   const shortAddress = useMemo(() => {
-    if (!publicKey) return "";
-    const b58 = publicKey.toBase58();
-    return `${b58.slice(0, 4)}..${b58.slice(-4)}`;
-  }, [publicKey]);
+    if (!walletAddress) return "";
+    if (activeChain === "ethereum") {
+      return `${walletAddress.slice(0, 6)}..${walletAddress.slice(-4)}`;
+    }
+    return `${walletAddress.slice(0, 4)}..${walletAddress.slice(-4)}`;
+  }, [walletAddress, activeChain]);
 
   const handleClick = useCallback(() => {
     if (connected) {
-      disconnect();
+      adapter.disconnect();
     } else {
-      setVisible(true);
+      adapter.connect();
     }
-  }, [connected, disconnect, setVisible]);
+  }, [connected, adapter]);
 
   if (connecting) {
     return (
@@ -36,7 +39,6 @@ export function WalletButton() {
     );
   }
 
-  /* ── Disconnected: bold brand CTA ── */
   if (!connected) {
     return (
       <button
@@ -74,21 +76,26 @@ export function WalletButton() {
     );
   }
 
-  /* ── Connected: subtle, blends with background ── */
   return (
     <button
       onClick={handleClick}
       className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-gray-800/50 text-gray-500 border border-gray-800 hover:bg-gray-800 hover:text-gray-300 transition-colors"
       title="Disconnect wallet"
     >
-      {wallet?.adapter.icon && (
+      {activeChain === "solana" && solWallet?.adapter.icon && (
         <img
-          src={wallet.adapter.icon}
+          src={solWallet.adapter.icon}
           alt=""
           width={16}
           height={16}
           className="rounded-sm opacity-50"
         />
+      )}
+      {activeChain === "ethereum" && (
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="opacity-50">
+          <path d="M8 1L3 8l5 3 5-3L8 1z" fill="currentColor" opacity="0.6" />
+          <path d="M8 12l-5-3 5 4 5-4-5 3z" fill="currentColor" opacity="0.4" />
+        </svg>
       )}
       {shortAddress}
     </button>

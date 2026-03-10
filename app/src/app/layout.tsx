@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { WalletProvider } from "@/components/wallet/WalletProvider";
 import "./globals.css";
+import { ClientProviders } from "@/components/wallet/ClientProviders";
 
 export const metadata: Metadata = {
   title: "256M Protocol",
-  description: "Decentralized watch insurance on Solana",
+  description: "Decentralized watch insurance on Solana and Ethereum",
 };
 
 export default function RootLayout({
@@ -15,7 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <WalletProvider>{children}</WalletProvider>
+        <ClientProviders>{children}</ClientProviders>
       </body>
     </html>
   );

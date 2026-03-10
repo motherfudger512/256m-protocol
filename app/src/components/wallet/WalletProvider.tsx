@@ -10,9 +10,17 @@ import {
   PhantomWalletAdapter,
   SolflareWalletAdapter,
 } from "@solana/wallet-adapter-wallets";
+import { WagmiProvider } from "wagmi";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { RainbowKitProvider, darkTheme } from "@rainbow-me/rainbowkit";
 import { DemoWalletAdapter } from "./DemoWalletAdapter";
+import { wagmiConfig } from "@/chains/ethereum/config";
+import { ChainProvider } from "@/chains/ChainContext";
 
 import "@solana/wallet-adapter-react-ui/styles.css";
+import "@rainbow-me/rainbowkit/styles.css";
+
+const queryClient = new QueryClient();
 
 interface Props {
   children: ReactNode;
@@ -32,10 +40,18 @@ export const WalletProvider: FC<Props> = ({ children }) => {
   );
 
   return (
-    <ConnectionProvider endpoint={endpoint}>
-      <SolanaWalletProvider wallets={wallets} autoConnect>
-        <WalletModalProvider>{children}</WalletModalProvider>
-      </SolanaWalletProvider>
-    </ConnectionProvider>
+    <WagmiProvider config={wagmiConfig}>
+      <QueryClientProvider client={queryClient}>
+        <RainbowKitProvider theme={darkTheme()}>
+          <ConnectionProvider endpoint={endpoint}>
+            <SolanaWalletProvider wallets={wallets} autoConnect>
+              <WalletModalProvider>
+                <ChainProvider>{children}</ChainProvider>
+              </WalletModalProvider>
+            </SolanaWalletProvider>
+          </ConnectionProvider>
+        </RainbowKitProvider>
+      </QueryClientProvider>
+    </WagmiProvider>
   );
 };

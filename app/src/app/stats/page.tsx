@@ -3,6 +3,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import { WalletButton } from "@/components/wallet/WalletButton";
+import { NetworkSwitcher } from "@/components/wallet/NetworkSwitcher";
+import { useChain } from "@/chains/ChainContext";
 import { usePoolState } from "@/hooks/usePoolState";
 import { useProtocolState } from "@/hooks/useProtocolState";
 import { useClaimsState } from "@/hooks/useClaimsState";
@@ -10,10 +12,6 @@ import { bpsToPercent } from "@/lib/formatting";
 import { SOL_PRICE_USD } from "@/lib/constants";
 
 // ── Helpers ─────────────────────────────────────────────────────────────────
-
-function num(bn: any): number {
-  return typeof bn === "number" ? bn : bn.toNumber();
-}
 
 function fmtUsd(n: number): string {
   if (n >= 1_000_000) return `$${(n / 1_000_000).toFixed(2)}M`;
@@ -204,32 +202,31 @@ function StatCard({
 // ── Main Page ───────────────────────────────────────────────────────────────
 
 export default function StatsPage() {
+  const { adapter } = useChain();
   const { data: pool, loading: poolLoading } = usePoolState();
   const { data: protocol, loading: protocolLoading } = useProtocolState();
   const { data: claims, loading: claimsLoading } = useClaimsState();
 
   const loading = poolLoading || protocolLoading || claimsLoading;
 
-  // ── Derived pool values ───────────────────────────────────────────────
-  const usdcCapital = pool ? num(pool.totalCapitalUsdc) / 1e6 : 0;
-  const solCapital = pool ? (num(pool.totalCapitalSol) / 1e9) * SOL_PRICE_USD : 0;
+  // Pool values are already normalized to human-readable numbers
+  const usdcCapital = pool?.totalCapitalUsdc ?? 0;
+  const solCapital = pool ? pool.totalCapitalSol * SOL_PRICE_USD : 0;
   const totalCapital = usdcCapital + solCapital;
-  const deployedUsdc = pool ? num(pool.totalDeployedUsdc) / 1e6 : 0;
-  const premiums = pool ? num(pool.totalPremiumsCollected) / 1e6 : 0;
-  const claimsPaid = pool ? num(pool.totalClaimsPaid) / 1e6 : 0;
-  const interest = pool ? num(pool.totalInterestEarned) / 1e6 : 0;
+  const deployedUsdc = pool?.totalDeployedUsdc ?? 0;
+  const premiums = pool?.totalPremiumsCollected ?? 0;
+  const claimsPaid = pool?.totalClaimsPaid ?? 0;
+  const interest = pool?.totalInterestEarned ?? 0;
   const netRevenue = premiums + interest - claimsPaid;
   const lossRatio = premiums > 0 ? (claimsPaid / premiums) * 100 : 0;
 
-  // ── Protocol values ───────────────────────────────────────────────────
-  const totalPolicies = protocol ? num(protocol.totalPolicies) : 0;
-  const activePolicies = protocol ? num(protocol.activePolicies) : 0;
-  const maxPolicies = protocol ? num(protocol.maxPolicies) : 1;
+  const totalPolicies = protocol?.totalPolicies ?? 0;
+  const activePolicies = protocol?.activePolicies ?? 0;
+  const maxPolicies = protocol?.maxPolicies ?? 1;
 
-  // ── Claims values ─────────────────────────────────────────────────────
-  const totalClaims = claims ? num(claims.totalClaims) : 0;
-  const approved = claims ? num(claims.approvedClaims) : 0;
-  const rejected = claims ? num(claims.rejectedClaims) : 0;
+  const totalClaims = claims?.totalClaims ?? 0;
+  const approved = claims?.approvedClaims ?? 0;
+  const rejected = claims?.rejectedClaims ?? 0;
   const pending = totalClaims - approved - rejected;
 
   return (
@@ -238,7 +235,10 @@ export default function StatsPage() {
         <Link href="/" className="hover:opacity-80 transition-opacity">
           <Image src="/logo.svg" alt="256M" width={120} height={25} />
         </Link>
-        <WalletButton />
+        <div className="flex items-center gap-3">
+          <NetworkSwitcher />
+          <WalletButton />
+        </div>
       </header>
 
       <main className="max-w-5xl mx-auto p-8 space-y-8">
@@ -387,7 +387,7 @@ export default function StatsPage() {
                       <div className="bg-gray-800/60 rounded-lg p-3 border border-gray-700">
                         <div className="text-[10px] text-gray-500 uppercase">LP Supply</div>
                         <div className="text-sm font-semibold">
-                          {fmtNumber(num(pool.totalLpSupply))}
+                          {fmtNumber(pool.totalLpSupply)}
                         </div>
                       </div>
                       <div className="bg-gray-800/60 rounded-lg p-3 border border-gray-700">
@@ -440,7 +440,7 @@ export default function StatsPage() {
                     <div className="bg-gray-800/60 rounded-lg p-3 border border-gray-700">
                       <div className="text-[10px] text-gray-500 uppercase">Max Insured</div>
                       <div className="text-sm font-semibold">
-                        {fmtUsd(num(protocol.maxInsuredValue) / 1e6)}
+                        {fmtUsd(protocol.maxInsuredValue)}
                       </div>
                     </div>
                     <div className="bg-gray-800/60 rounded-lg p-3 border border-gray-700">
@@ -538,13 +538,13 @@ export default function StatsPage() {
                   <div className="bg-gray-800/60 rounded-lg p-3 border border-gray-700">
                     <div className="text-[10px] text-gray-500 uppercase">Max Auto Payout</div>
                     <div className="text-sm font-semibold">
-                      {fmtUsd(num(claims.maxAutoPayout) / 1e6)}
+                      {fmtUsd(claims.maxAutoPayout)}
                     </div>
                   </div>
                   <div className="bg-gray-800/60 rounded-lg p-3 border border-gray-700">
                     <div className="text-[10px] text-gray-500 uppercase">Daily Auto Limit</div>
                     <div className="text-sm font-semibold">
-                      {fmtUsd(num(claims.dailyAutoPayoutLimit) / 1e6)}
+                      {fmtUsd(claims.dailyAutoPayoutLimit)}
                     </div>
                   </div>
                 </div>

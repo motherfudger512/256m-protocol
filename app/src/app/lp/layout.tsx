@@ -4,7 +4,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { WalletButton } from "@/components/wallet/WalletButton";
-import { useAnchorWallet } from "@solana/wallet-adapter-react";
+import { NetworkSwitcher } from "@/components/wallet/NetworkSwitcher";
+import { useChain } from "@/chains/ChainContext";
 
 const navItems = [
   { href: "/lp", label: "Dashboard" },
@@ -18,7 +19,7 @@ export default function LPLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const wallet = useAnchorWallet();
+  const { adapter } = useChain();
 
   return (
     <div className="min-h-screen flex">
@@ -43,10 +44,13 @@ export default function LPLayout({
       <div className="flex-1 flex flex-col">
         <header className="flex items-center justify-between px-6 py-3 border-b border-gray-800">
           <span className="text-sm text-gray-400">LP Provider</span>
-          <WalletButton />
+          <div className="flex items-center gap-3">
+            <NetworkSwitcher />
+            <WalletButton />
+          </div>
         </header>
         <main className="flex-1 p-6">
-          {!wallet ? (
+          {!adapter.connected ? (
             <div className="text-center text-gray-500 mt-20">
               Connect your wallet to continue
             </div>

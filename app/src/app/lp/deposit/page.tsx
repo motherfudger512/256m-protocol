@@ -1,18 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { useChain } from "@/chains/ChainContext";
 import { useLPProvider } from "@/hooks/useLPProvider";
 import { useLPPosition } from "@/hooks/useLPPosition";
 import { usePoolState } from "@/hooks/usePoolState";
 import { TransactionToast } from "@/components/shared/TransactionToast";
-import { solToLamports, bpsToPercent } from "@/lib/formatting";
 import { SOL_PRICE_USD } from "@/lib/constants";
 
 // ── Helpers ─────────────────────────────────────────────────────────────────
-function num(bn: any): number {
-  return typeof bn === "number" ? bn : bn.toNumber();
-}
-
 function fmtUsd(n: number): string {
   if (n >= 1_000_000) return `$${(n / 1_000_000).toFixed(2)}M`;
   if (n >= 1_000) return `$${(n / 1_000).toFixed(1)}k`;
@@ -21,22 +17,26 @@ function fmtUsd(n: number): string {
 
 // ── Main Page ───────────────────────────────────────────────────────────────
 export default function DepositPage() {
-  const { depositUsdc, depositSol, loading, error, txSignature } =
+  const { adapter } = useChain();
+  const { depositStablecoin, depositNative, loading, error, txSignature } =
     useLPProvider();
   const { data: position, exists, refresh: refreshPosition } = useLPPosition();
   const { data: pool, loading: poolLoading, refresh: refreshPool } = usePoolState();
 
-  const [asset, setAsset] = useState<"usdc" | "sol">("usdc");
+  const supportsNative = pool?.supportsNativeDeposit ?? false;
+  const nativeToken = adapter.config.nativeToken;
+
+  const [asset, setAsset] = useState<"stablecoin" | "native">("stablecoin");
   const [amount, setAmount] = useState("");
 
-  // ── Pool derived values ───────────────────────────────────────────────
-  const usdcCapital = pool ? num(pool.totalCapitalUsdc) / 1e6 : 0;
-  const solCapital = pool ? (num(pool.totalCapitalSol) / 1e9) * SOL_PRICE_USD : 0;
-  const totalCapital = usdcCapital + solCapital;
-  const deployedUsdc = pool ? num(pool.totalDeployedUsdc) / 1e6 : 0;
-  const premiums = pool ? num(pool.totalPremiumsCollected) / 1e6 : 0;
-  const claims = pool ? num(pool.totalClaimsPaid) / 1e6 : 0;
-  const interest = pool ? num(pool.totalInterestEarned) / 1e6 : 0;
+  // ── Pool derived values (already human-readable from normalized data) ──
+  const usdcCapital = pool?.totalCapitalUsdc ?? 0;
+  const solCapitalUsd = pool ? pool.totalCapitalSol * SOL_PRICE_USD : 0;
+  const totalCapital = usdcCapital + solCapitalUsd;
+  const deployedUsdc = pool?.totalDeployedUsdc ?? 0;
+  const premiums = pool?.totalPremiumsCollected ?? 0;
+  const claims = pool?.totalClaimsPaid ?? 0;
+  const interest = pool?.totalInterestEarned ?? 0;
   const netRevenue = premiums + interest - claims;
   const scrBps = pool?.scrCoverageRatio ?? 10000;
   const scrPct = (scrBps / 100).toFixed(0);
@@ -51,7 +51,7 @@ export default function DepositPage() {
   const usdcDeployedPct =
     totalCapital > 0 ? ((deployedUsdc / totalCapital) * 100).toFixed(0) : "0";
   const solPct =
-    totalCapital > 0 ? ((solCapital / totalCapital) * 100).toFixed(0) : "0";
+    totalCapital > 0 ? ((solCapitalUsd / totalCapital) * 100).toFixed(0) : "0";
 
   // SCR colour
   const scrColor =
@@ -62,15 +62,13 @@ export default function DepositPage() {
   // ── Handlers ──────────────────────────────────────────────────────────
   const handleDeposit = async () => {
     if (!amount) return;
+    const parsedAmount = parseFloat(amount);
 
     try {
-      if (asset === "usdc") {
-        alert(
-          "To deposit USDC, you need a funded USDC token account. This requires the USDC mint address for your network.",
-        );
-        return;
-      } else {
-        await depositSol(solToLamports(parseFloat(amount)));
+      if (asset === "stablecoin") {
+        await depositStablecoin(parsedAmount);
+      } else if (depositNative) {
+        await depositNative(parsedAmount);
       }
       setAmount("");
       await Promise.all([refreshPosition(), refreshPool()]);
@@ -132,13 +130,15 @@ export default function DepositPage() {
                       backgroundColor: "#a78bfa",
                     }}
                   />
-                  <div
-                    className="h-full"
-                    style={{
-                      width: `${solPct}%`,
-                      backgroundColor: "#14b8a6",
-                    }}
-                  />
+                  {supportsNative && (
+                    <div
+                      className="h-full"
+                      style={{
+                        width: `${solPct}%`,
+                        backgroundColor: "#14b8a6",
+                      }}
+                    />
+                  )}
                 </>
               )}
             </div>
@@ -151,10 +151,12 @@ export default function DepositPage() {
                 <span className="inline-block h-2 w-2 rounded-sm" style={{ backgroundColor: "#a78bfa" }} />
                 Deployed {usdcDeployedPct}%
               </span>
-              <span className="flex items-center gap-1">
-                <span className="inline-block h-2 w-2 rounded-sm" style={{ backgroundColor: "#14b8a6" }} />
-                SOL {solPct}%
-              </span>
+              {supportsNative && (
+                <span className="flex items-center gap-1">
+                  <span className="inline-block h-2 w-2 rounded-sm" style={{ backgroundColor: "#14b8a6" }} />
+                  {nativeToken} {solPct}%
+                </span>
+              )}
             </div>
           </div>
 
@@ -185,21 +187,23 @@ export default function DepositPage() {
         {/* Asset – toggle buttons */}
         <div>
           <label className="block text-sm text-gray-400 mb-1">Asset</label>
-          <div className="grid grid-cols-2 gap-2">
+          <div className={`grid gap-2 ${supportsNative ? "grid-cols-2" : "grid-cols-1"}`}>
+            {supportsNative && (
+              <button
+                onClick={() => setAsset("native")}
+                className={`rounded px-4 py-2 text-sm font-medium transition-colors border ${
+                  asset === "native"
+                    ? "bg-brand-600 border-brand-500 text-white"
+                    : "bg-gray-900 border-gray-700 text-gray-400 hover:border-gray-600"
+                }`}
+              >
+                {nativeToken}
+              </button>
+            )}
             <button
-              onClick={() => setAsset("sol")}
+              onClick={() => setAsset("stablecoin")}
               className={`rounded px-4 py-2 text-sm font-medium transition-colors border ${
-                asset === "sol"
-                  ? "bg-brand-600 border-brand-500 text-white"
-                  : "bg-gray-900 border-gray-700 text-gray-400 hover:border-gray-600"
-              }`}
-            >
-              SOL
-            </button>
-            <button
-              onClick={() => setAsset("usdc")}
-              className={`rounded px-4 py-2 text-sm font-medium transition-colors border ${
-                asset === "usdc"
+                asset === "stablecoin"
                   ? "bg-brand-600 border-brand-500 text-white"
                   : "bg-gray-900 border-gray-700 text-gray-400 hover:border-gray-600"
               }`}
@@ -211,13 +215,13 @@ export default function DepositPage() {
 
         <div>
           <label className="block text-sm text-gray-400 mb-1">
-            Amount ({asset.toUpperCase()})
+            Amount ({asset === "native" ? nativeToken : "USDC"})
           </label>
           <input
             type="number"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
-            placeholder={asset === "usdc" ? "10000" : "50"}
+            placeholder={asset === "stablecoin" ? "10000" : "50"}
             className="w-full bg-gray-900 border border-gray-700 rounded px-3 py-2 text-sm focus:border-brand-500 focus:outline-none"
           />
         </div>
@@ -227,7 +231,7 @@ export default function DepositPage() {
           disabled={loading || !amount}
           className="w-full bg-brand-600 hover:bg-brand-700 disabled:opacity-50 rounded px-4 py-2 text-sm font-medium transition-colors"
         >
-          {loading ? "Depositing..." : `Deposit ${asset.toUpperCase()}`}
+          {loading ? "Depositing..." : `Deposit ${asset === "native" ? nativeToken : "USDC"}`}
         </button>
 
         <p className="text-xs text-gray-500">

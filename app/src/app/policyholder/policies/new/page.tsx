@@ -5,7 +5,6 @@ import { usePolicyholder } from "@/hooks/usePolicyholder";
 import { useCustomer } from "@/hooks/useCustomer";
 import { usePoolState } from "@/hooks/usePoolState";
 import { TransactionToast } from "@/components/shared/TransactionToast";
-import { usdcToBase } from "@/lib/formatting";
 import {
   calculateQuote,
   riskScoreToLevel,
@@ -219,11 +218,11 @@ export default function GetQuotePage() {
 
       await createPolicy({
         watchDetailsHash: hashBytes,
-        insuredValue: usdcToBase(parseFloat(watchValue)),
-        premium: usdcToBase(quote.premiumUsdc),
+        insuredValue: parseFloat(watchValue),
+        premium: quote.premiumUsdc,
         deductibleBps: quote.deductibleBps,
-        coverageType: coverageType === "theftOnly" ? { theftOnly: {} } : { theftAndLoss: {} },
-        paymentFrequency: paymentFrequency === "monthly" ? { monthly: {} } : { annual: {} },
+        coverageType,
+        paymentFrequency,
         durationDays: parseInt(durationDays),
       });
       setPolicyCreated(true);

@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useClaimsState } from "@/hooks/useClaimsState";
-import { baseToUsdc } from "@/lib/formatting";
 
 export default function ClaimsListPage() {
   const { data: claimsState, loading } = useClaimsState();
@@ -26,25 +25,25 @@ export default function ClaimsListPage() {
           <div className="bg-gray-900 rounded-lg p-4 border border-gray-800">
             <div className="text-sm text-gray-400">Total Claims</div>
             <div className="text-lg font-semibold">
-              {claimsState.totalClaims.toNumber()}
+              {claimsState.totalClaims}
             </div>
           </div>
           <div className="bg-gray-900 rounded-lg p-4 border border-gray-800">
             <div className="text-sm text-gray-400">Approved</div>
             <div className="text-lg font-semibold text-green-400">
-              {claimsState.approvedClaims.toNumber()}
+              {claimsState.approvedClaims}
             </div>
           </div>
           <div className="bg-gray-900 rounded-lg p-4 border border-gray-800">
             <div className="text-sm text-gray-400">Rejected</div>
             <div className="text-lg font-semibold text-red-400">
-              {claimsState.rejectedClaims.toNumber()}
+              {claimsState.rejectedClaims}
             </div>
           </div>
           <div className="bg-gray-900 rounded-lg p-4 border border-gray-800">
             <div className="text-sm text-gray-400">Total Paid Out</div>
             <div className="text-lg font-semibold">
-              {baseToUsdc(claimsState.totalPaidOut)} USDC
+              {claimsState.totalPaidOut.toLocaleString()} USDC
             </div>
           </div>
         </div>

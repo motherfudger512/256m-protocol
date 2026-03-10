@@ -1,11 +1,11 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import { useChain } from "@/chains/ChainContext";
 import { useLPProvider } from "@/hooks/useLPProvider";
 import { useLPPosition } from "@/hooks/useLPPosition";
 import { usePoolState } from "@/hooks/usePoolState";
 import { TransactionToast } from "@/components/shared/TransactionToast";
-import BN from "bn.js";
 
 // ── Withdrawal fee tiers ────────────────────────────────────────────────────
 // Max fee cap is 10%. If the on-chain fee would exceed 10%, withdrawals are
@@ -30,12 +30,16 @@ const FEE_TIERS = [
 ];
 
 export default function WithdrawPage() {
-  const { withdrawUsdc, withdrawSol, loading, error, txSignature } =
+  const { adapter } = useChain();
+  const { withdrawStablecoin, withdrawNative, loading, error, txSignature } =
     useLPProvider();
   const { data: position, exists, refresh: refreshPosition } = useLPPosition();
   const { data: poolState, refresh: refreshPool } = usePoolState();
 
-  const [asset, setAsset] = useState<"usdc" | "sol">("usdc");
+  const supportsNative = poolState?.supportsNativeDeposit ?? false;
+  const nativeToken = adapter.config.nativeToken;
+
+  const [asset, setAsset] = useState<"stablecoin" | "native">("stablecoin");
   const [lpTokens, setLpTokens] = useState("");
 
   // Current SCR coverage ratio from on-chain pool state (in bps, e.g. 15000 = 150%)
@@ -72,8 +76,8 @@ export default function WithdrawPage() {
         ? "border-amber-500/30"
         : "border-green-500/30";
 
-  // LP token balance for percentage buttons
-  const userLpTokens = position?.lpTokens?.toNumber() ?? 0;
+  // LP token balance (already a plain number from normalized data)
+  const userLpTokens = position?.lpTokens ?? 0;
 
   const handlePercentage = (pct: number) => {
     if (pct >= 100) {
@@ -85,16 +89,13 @@ export default function WithdrawPage() {
 
   const handleWithdraw = async () => {
     if (!lpTokens) return;
-    const amount = new BN(lpTokens);
+    const amount = parseInt(lpTokens);
 
     try {
-      if (asset === "usdc") {
-        alert(
-          "To withdraw USDC, you need a USDC token account. This requires the USDC mint address for your network.",
-        );
-        return;
-      } else {
-        await withdrawSol(amount);
+      if (asset === "stablecoin") {
+        await withdrawStablecoin(amount);
+      } else if (withdrawNative) {
+        await withdrawNative(amount);
       }
       setLpTokens("");
       await Promise.all([refreshPosition(), refreshPool()]);
@@ -164,21 +165,23 @@ export default function WithdrawPage() {
           <label className="block text-sm text-gray-400 mb-1">
             Withdraw As
           </label>
-          <div className="grid grid-cols-2 gap-2">
+          <div className={`grid gap-2 ${supportsNative ? "grid-cols-2" : "grid-cols-1"}`}>
+            {supportsNative && (
+              <button
+                onClick={() => setAsset("native")}
+                className={`rounded px-4 py-2 text-sm font-medium transition-colors border ${
+                  asset === "native"
+                    ? "bg-brand-600 border-brand-500 text-white"
+                    : "bg-gray-900 border-gray-700 text-gray-400 hover:border-gray-600"
+                }`}
+              >
+                {nativeToken}
+              </button>
+            )}
             <button
-              onClick={() => setAsset("sol")}
+              onClick={() => setAsset("stablecoin")}
               className={`rounded px-4 py-2 text-sm font-medium transition-colors border ${
-                asset === "sol"
-                  ? "bg-brand-600 border-brand-500 text-white"
-                  : "bg-gray-900 border-gray-700 text-gray-400 hover:border-gray-600"
-              }`}
-            >
-              SOL
-            </button>
-            <button
-              onClick={() => setAsset("usdc")}
-              className={`rounded px-4 py-2 text-sm font-medium transition-colors border ${
-                asset === "usdc"
+                asset === "stablecoin"
                   ? "bg-brand-600 border-brand-500 text-white"
                   : "bg-gray-900 border-gray-700 text-gray-400 hover:border-gray-600"
               }`}
@@ -197,7 +200,7 @@ export default function WithdrawPage() {
             ? "Withdrawing..."
             : withdrawalsSuspended
               ? "Withdrawals Temporarily Suspended"
-              : `Withdraw ${asset.toUpperCase()}`}
+              : `Withdraw ${asset === "native" ? nativeToken : "USDC"}`}
         </button>
 
         {withdrawalsSuspended && (
